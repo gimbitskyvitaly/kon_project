@@ -30,8 +30,17 @@ print("UDP camera controller server up and listening")
 # Listen for incoming datagrams
 
 def server_rec_send():
-    video = cv2.VideoCapture(0)
+    for i in np.arange(-1000, 1000):
+        video = cv2.VideoCapture(i)
+        ret, frame = video.read()
+        if ret:
+            priny('camera index', i)
+            break
+    video.set(3, 640)
+    video.set(4, 480)
+    video.set(10, 100)
     ret, frame = video.read()
+    print(ret, frame)
     print('start camera')
     c_contr = camera_controller(video)
     pyautogui.FAILSAFE = False
@@ -53,8 +62,8 @@ def server_rec_send():
             print('error camera')
             break
 
-        p_x, p_y = self.camera_contr.process_camera(frame)
-        bytesToSend = b'' + str(p_x) + ' ' + p_y
-        UDPServerSocket.sendto(bytesToSend, address)
+        p_x, p_y = c_contr.process_camera(frame)
+        bytesToSend = str(p_x) + ' ' + str(p_y)
+        UDPServerSocket.sendto(bytesToSend.encode('utf-8'), address)
 
 server_rec_send()
