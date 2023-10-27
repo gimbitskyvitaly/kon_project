@@ -19,7 +19,8 @@ for gest in gests:
 
 data = {}
 for gest in gests:
-    data[gest] = np.hstack([X[gest][:-2], X[gest][1:-1], X[gest][2:]])
+    #data[gest] = np.hstack([X[gest][:-2], X[gest][1:-1], X[gest][2:]])
+    data[gest] = X[gest]
 
 X = []
 y = []
@@ -31,6 +32,7 @@ for i, gest in enumerate(gests):
 
 X = np.array(X)
 y = np.array(y)
+print(X.shape)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.1, shuffle= True)
 eval_pool = Pool(X_test, y_test)
 model = CatBoostClassifier(loss_function= 'MultiClass')

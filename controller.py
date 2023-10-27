@@ -18,7 +18,7 @@ class gest_controller():
 
         self.gests = ['fire', 'water', 'stone', 'wind', 'kon']
 
-        self.frames = np.zeros((3, 126))
+        self.frame = np.zeros(126)
 
         self.count = 0
         self.data = np.zeros((42, 3))
@@ -37,15 +37,10 @@ class gest_controller():
                     if count_landmarks == 42:
                         break
 
-            self.frames[0] = self.frames[1]
-            self.frames[1] = self.frames[2]
-            self.frames[2] = self.data.flatten()
-            if self.count >= 2:
-                y = self.model.predict(self.frames.reshape(1, -1))
-                gest = self.gests[y[0, 0]]
-            else:
-                self.count += 1
-                gest = 'gest'
+            self.frame = self.data.flatten()
+            y = self.model.predict(self.frame)
+            print(self.model.predict_proba(self.frame))
+            gest = self.gests[y[0]]
 
             return gest
 
@@ -120,5 +115,5 @@ class controller():
 
 contr = controller()
 
-# while True:
-#     contr.controller_iteration()
+while True:
+    contr.controller_iteration()
