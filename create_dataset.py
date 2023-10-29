@@ -11,7 +11,7 @@ num_frames = 1000
 frames_gest = 5
 output_folder = 'dataset'
 
-gest = 'kon'
+gest = 'destruction'
 file = open(output_folder + '/' + 'gest_' + gest + '.csv', 'w')
 writer = csv.writer(file)
 

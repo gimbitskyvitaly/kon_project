@@ -5,7 +5,7 @@ import pickle
 import pyautogui
 import cv2
 
-from controller import camera_controller
+from controller import controller
 
 localIP = "127.0.0.1"
 
@@ -30,13 +30,13 @@ print("UDP camera controller server up and listening")
 # Listen for incoming datagrams
 
 def server_rec_send():
-    video = cv2.VideoCapture(0)
-    ret, frame = video.read()
-    print(ret, frame)
+    # video = cv2.VideoCapture(0)
+    # ret, frame = video.read()
+    # print(ret, frame)
     print('start camera')
-    c_contr = camera_controller(video)
+    contr = controller()
     pyautogui.FAILSAFE = False
-    print(video.isOpened())
+    #print(video.isOpened())
 
     start_writing = False
     address = None
@@ -47,15 +47,15 @@ def server_rec_send():
         address = bytesAddressPair[1]
         message = message.decode("utf-8")
         print(address, message)
-        print(video)
-        ret, frame = video.read()
+        #print(video)
+        #ret, frame = video.read()
 
-        if not ret:
-            print('error camera')
-            break
+        # if not ret:
+        #     print('error camera')
+        #     break
 
-        p_x, p_y = c_contr.process_camera(frame)
-        bytesToSend = str(p_x) + ' ' + str(p_y)
+        coord, gest = contr.controller_iteration()
+        bytesToSend = str(coord) + ' ' + str(gest)
         UDPServerSocket.sendto(bytesToSend.encode('utf-8'), address)
 
 server_rec_send()

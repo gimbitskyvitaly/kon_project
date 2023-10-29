@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from catboost import CatBoostClassifier, Pool
 
 output_folder = 'dataset'
-gests = ['fire', 'water', 'stone', 'wind', 'kon']
+gests = ['reconstruction', 'illusion', 'destruction', 'kon', 'stop', 'unk']
 X = {}
 
 for gest in  gests:
@@ -27,7 +27,7 @@ y = []
 
 for i, gest in enumerate(gests):
     for feature in data[gest]:
-        X.append(feature)
+        X.append(feature[:63])
         y.append(i)
 
 X = np.array(X)
