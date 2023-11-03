@@ -12,8 +12,11 @@ class gest_controller():
         self.hands = mp.solutions.hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
         self.model_dir = 'gest_model'
+        self.two_hands_model_dir = 'gest_model'
         self.model = CatBoostClassifier()
         self.model.load_model(self.model_dir)
+        self.two_hands_model = CatBoostClassifier()
+        self.two_hands_model.load_model(self.two_hands_model_dir)
 
         self.video = video
 
@@ -29,32 +32,39 @@ class gest_controller():
 
     def replace_subarrays(self, target_value):
         array = self.gest_list
+        print(self.gest_list)
         result = []
         subarray = []
         for value in array:
-            if value == target_value:
+            if value == target_value or value == 'stop':
                 subarray.append(value)
             elif subarray:
                 #result.extend([target_value] * len(subarray))
                 if len(subarray) >= 3:
-                    result.append(target_value)
+                    result.append('space')
                 subarray = []
                 result.append(value)
             else:
                 result.append(value)
+        print(result)
 
         return result
 
     def parse_gest(self):
         begin_iter = 0
         parse_list = []
-        self.gest_list = self.replace_subarrays('space')
+        self.gest_list = self.replace_subarrays('unk')
         for i in np.arange(len(self.gest_list) - 2):
             if self.gest_list[i] == 'space':
                 count = Counter(self.gest_list[begin_iter:i])
                 gest = count.most_common()[0][0]
                 parse_list.append(gest)
                 begin_iter = i + 1
+        if len(parse_list) == 0 and len(self.gest_list) > 3:
+            count = Counter(self.gest_list[:-3])
+            print(count.most_common())
+            gest = count.most_common()[0][0]
+            parse_list.append(gest)
         self.gest_list = []
         return parse_list
 
@@ -64,7 +74,7 @@ class gest_controller():
         landmarks = results.multi_hand_landmarks
         count_landmarks = 0
         if landmarks:
-            if len(landmarks) == 1:
+            if landmarks:
                 for landmark in landmarks:
                     for coordinates in landmark.landmark:
                         if count_landmarks < 42:
@@ -74,11 +84,12 @@ class gest_controller():
                             break
 
                 self.frame = self.data.flatten()
-                y = self.model.predict(self.frame)
+                if len(landmarks) == 1:
+                    y = self.model.predict(self.frame)
+                else:
+                    y = self.two_hands_model.predict(self.frame)
                 #print(self.model.predict_proba(self.frame))
                 gest = self.gests[y[0]]
-            else:
-                gest = 'space'
             self.gest_list.append(gest)
             for i in np.arange(len(self.prev_gest) - 1):
                 self.prev_gest[i] = self.prev_gest[i + 1]
