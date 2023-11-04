@@ -20,6 +20,7 @@ func _input(event):
 		if event.keycode == KEY_R:
 			shoot(get_global_mouse_position())
 		if event.keycode == KEY_1:
+			$Sprite2Dtest.visible = not $Sprite2Dtest.visible
 			impulse()
 			
 func going (target, speed_up_target):

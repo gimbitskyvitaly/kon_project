@@ -2,6 +2,11 @@ extends CharacterBody2D
 
 class_name BasicPlayer
 
+signal health_changed
+signal mana_changed
+signal stamina_changed
+
+
 @export var speed = 50
 @export var impulse_speed = -3
 @export var Bullet : PackedScene
@@ -17,15 +22,21 @@ var speed_up_target = null
 var ind = -1
 var rng = RandomNumberGenerator.new()
 var hp = 0
+var mana = 0
+var stamina = 0
 var dir_anim = ["left", "left_up", "up", "right_up", "right", "right_down", "down", "left_down"]
 
-
+var animation_player: AnimationPlayer
 
 func _ready():
 	add_to_group("Hit")
 	add_to_group("Player")
 	hp = rng.randf_range(10.0, 100.0)
-	
+	mana = 100
+	stamina = 100
+
+func _on_poof_player_animation_finished(anim_name):
+	$AnimatedPoof.hide()
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name.begins_with("attack"):################attack
@@ -42,9 +53,9 @@ func _on_animation_player_animation_finished(anim_name):
 	if anim_name.begins_with("attack"):################impulse
 		add_v = Vector2.ZERO
 		
-func animate_going (ind):
+func animate_going(ind):
 	if is_going == true:
-		$AnimationPlayer.play ("go_" + dir_anim[ind])
+		$AnimationPlayer.play("go_" + dir_anim[ind])
 		
 func attack (dist_to_attack):
 		var bodyes_dist = get_distance_to_group("Hit")
@@ -61,16 +72,22 @@ func attack_enemy (body_to_hit):
 		if ind > 7:
 			ind = 0
 		get_node("Area2D/CollisionShape2D_" + dir_anim[ind]).disabled = false
-		$AnimationPlayer.play ("attack_" + dir_anim[ind])
+		$AnimationPlayer.play("attack_" + dir_anim[ind])
 		
-func invise ():
+func invise():
 		is_hide = !is_hide
 		if is_hide == true:
-			$Sprite2D.hide()
+			if mana >= 20:
+				spend_mana(20)
+				$AnimatedPoof.show()
+				$PoofPlayer.play('poof')
+				create_tween().tween_property($Sprite2D, "modulate:a", 0.05, 0.2)
 		else:
-			$Sprite2D.show()
+			create_tween().tween_property($Sprite2D, "modulate:a", 1.0, 0.2)
 			
-func speed_up (pos):
+func speed_up(pos):
+	if stamina >= 10:
+		spend_stamina(10)
 		is_going = false
 		is_speed_up = true
 		speed_up_target = pos
@@ -78,21 +95,32 @@ func speed_up (pos):
 		var ind = round(4*(v.angle()/PI))+ 4
 		if ind > 7:
 			ind = 0
-		$AnimationPlayer.play ("attack_" + dir_anim[ind])
+		$AnimationPlayer.play("attack_" + dir_anim[ind])
 		
 func take_damage(d):
+	health_changed.emit()
 	#print (d)
 	hp -= d
 	if hp <= 0:
 		queue_free()
+			
+func spend_mana(d):
+	mana_changed.emit()
+	mana -= d
+	
+func spend_stamina(d):
+	stamina_changed.emit()
+	stamina -= d
 		
 func shoot(target):
-	var b = Bullet.instantiate()
-	var dist_from_cust = 20
-	v = global_position.direction_to(target)
-	b.position = position + v * dist_from_cust
-	b.velocity = v
-	add_child(b)
+	if mana >= 10:
+		spend_mana(10)
+		var b = Bullet.instantiate()
+		var dist_from_cust = 20
+		v = global_position.direction_to(target)
+		b.position = position + v * dist_from_cust
+		b.velocity = v
+		get_tree().root.add_child(b)
 	
 func impulse ():
 	$Area_Shield/Shield.disabled = !$Area_Shield/Shield.disabled
