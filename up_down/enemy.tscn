@@ -1,12 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=26 format=3 uid="uid://d0hjk4so2svxt"]
 
-[ext_resource type="Texture2D" uid="uid://btjpro1f8g6qx" path="res://icon.svg" id="1_f23ur"]
-[ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
-[ext_resource type="PackedScene" uid="uid://cvpa6yjetfa3x" path="res://player.tscn" id="2_um5gy"]
-[ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
-[ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="3_gk7s6"]
-[ext_resource type="PackedScene" uid="uid://mx87e1x47rjh" path="res://wall.tscn" id="3_u7lvu"]
-[ext_resource type="PackedScene" uid="uid://d0hjk4so2svxt" path="res://enemy.tscn" id="7_1a7kf"]
+[ext_resource type="Script" path="res://enemy.gd" id="1_5anqx"]
+[ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="2_0ya0i"]
+[ext_resource type="PackedScene" uid="uid://mx87e1x47rjh" path="res://wall.tscn" id="3_k8k1x"]
+[ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="4_mu0kd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0adtm"]
 radius = 4.0
@@ -342,89 +339,76 @@ size = Vector2(4.5, 4.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sesh"]
 radius = 63.3877
 
-[node name="World" type="Node2D"]
+[node name="player3" type="CharacterBody2D"]
+position = Vector2(-50, 0)
+script = ExtResource("1_5anqx")
+Bullet = ExtResource("2_0ya0i")
+Wall = ExtResource("3_k8k1x")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-offset_left = -115.0
-offset_top = -60.0
-offset_right = 13.0
-offset_bottom = 68.0
-texture = ExtResource("1_f23ur")
-
-[node name="player" parent="." instance=ExtResource("2_um5gy")]
-
-[node name="player3" parent="." instance=ExtResource("7_1a7kf")]
-
-[node name="player4" type="CharacterBody2D" parent="."]
-position = Vector2(-50, -50)
-script = ExtResource("3_a1tvb")
-Bullet = ExtResource("3_gk7s6")
-Wall = ExtResource("3_u7lvu")
-
-[node name="Sprite2D" type="Sprite2D" parent="player4"]
-texture = ExtResource("2_bjj5n")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("4_mu0kd")
 hframes = 24
 vframes = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_0adtm")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="player4"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 audio_max_polyphony = 76
 libraries = {
 "": SubResource("AnimationLibrary_0h7ub")
 }
 
-[node name="Camera2D" type="Camera2D" parent="player4"]
+[node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(5, 5)
 position_smoothing_enabled = true
 
-[node name="Area2D" type="Area2D" parent="player4"]
+[node name="Area2D" type="Area2D" parent="."]
 
-[node name="CollisionShape2D_left" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_left" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-8, -1)
 shape = SubResource("RectangleShape2D_evglk")
 
-[node name="CollisionShape2D_right" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_right" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(8, -1)
 shape = SubResource("RectangleShape2D_evglk")
 disabled = true
 
-[node name="CollisionShape2D_down" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_down" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_evglk")
 disabled = true
 
-[node name="CollisionShape2D_up" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_up" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -12)
 shape = SubResource("RectangleShape2D_evglk")
 
-[node name="CollisionShape2D_right_up" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_right_up" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(7, -8)
 shape = SubResource("RectangleShape2D_evglk")
 disabled = true
 
-[node name="CollisionShape2D_right_down" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_right_down" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(7, 7)
 shape = SubResource("RectangleShape2D_evglk")
 disabled = true
 
-[node name="CollisionShape2D_left_down" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_left_down" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-7, 7)
 shape = SubResource("RectangleShape2D_evglk")
 disabled = true
 
-[node name="CollisionShape2D_left_up" type="CollisionShape2D" parent="player4/Area2D"]
+[node name="CollisionShape2D_left_up" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-7, -8)
 shape = SubResource("RectangleShape2D_evglk")
 
-[node name="area_folow" type="Area2D" parent="player4"]
+[node name="area_folow" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player4/area_folow"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area_folow"]
 shape = SubResource("CircleShape2D_8sesh")
 
-[connection signal="animation_finished" from="player4/AnimationPlayer" to="player4" method="_on_animation_player_animation_finished"]
-[connection signal="body_entered" from="player4/Area2D" to="player4" method="_on_area_2d_body_entered"]
-[connection signal="body_entered" from="player4/area_folow" to="player4" method="_on_area_folow_body_entered"]
-[connection signal="body_exited" from="player4/area_folow" to="player4" method="_on_area_folow_body_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="area_folow" to="." method="_on_area_folow_body_entered"]
+[connection signal="body_exited" from="area_folow" to="." method="_on_area_folow_body_exited"]

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://mx87e1x47rjh"]
+
+[ext_resource type="Texture2D" uid="uid://btjpro1f8g6qx" path="res://icon.svg" id="1_afvdb"]
+[ext_resource type="Script" path="res://wall_script.gd" id="1_tekhr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cqn8"]
+size = Vector2(22, 40)
+
+[node name="Wall" type="CharacterBody2D"]
+position = Vector2(-26, -13)
+script = ExtResource("1_tekhr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(26, 14)
+shape = SubResource("RectangleShape2D_2cqn8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(25.875, 14)
+scale = Vector2(0.173828, 0.3125)
+texture = ExtResource("1_afvdb")
+metadata/_edit_lock_ = true

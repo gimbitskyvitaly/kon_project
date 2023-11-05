@@ -5,12 +5,19 @@ extends BasicPlayer
 
 var target_body = null
 var i = 0
+var target_bodies = []
 
 func _init():
 	speed = 0.1
+	start_speed = 0.1
 	
 	
 func _physics_process(delta):
+	check_get_shield()
+	if Input.is_mouse_button_pressed(1): # when click Left mouse button
+		target = get_global_mouse_position()
+		
+		
 	if target_body != null:
 		if i % 100 == 0:
 			speed_up(target_body.position)
@@ -38,8 +45,11 @@ func going(target, speed_up_target):
 
 func _on_area_folow_body_entered(body):
 	if body.is_in_group("Player") and body.global_position != global_position:
-		target_body = body
+		target_bodies.push_back (body)
+		target_body = target_bodies[-1]
 
 
 func _on_area_folow_body_exited(body):
-	target_body = null
+	target_bodies.erase(body)
+	if len(target_bodies) > 0:
+		target_body = target_bodies[-1]
