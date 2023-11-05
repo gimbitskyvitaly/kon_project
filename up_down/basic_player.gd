@@ -11,6 +11,7 @@ var start_speed = 50
 @export var impulse_speed = -3
 @export var Bullet : PackedScene
 @export var Wall : PackedScene
+@export var Mob : PackedScene
 
 var target = Vector2.ZERO
 var v = Vector2.ZERO
@@ -38,12 +39,16 @@ var body_from_water_shield = null
 var fire_shield_damage = null
 var treshold = 0.5
 
+var body_scale = 1
+
 func _ready():
 	add_to_group("Hit")
 	add_to_group("Player")
-	hp = rng.randf_range(10.0, 100.0)
-	mana = 100
-	stamina = 100
+	hp = rng.randf_range(10.0, 100.0) * body_scale
+	print (hp)
+	mana = 100 * body_scale
+	stamina = 100 * body_scale
+	scale = Vector2(body_scale, body_scale)
 
 func _on_poof_player_animation_finished(anim_name):
 	$AnimatedPoof.hide()
@@ -124,6 +129,7 @@ func spend_stamina(d):
 	stamina -= d
 		
 func shoot(target, spell_scale= 1):
+	spell_scale *= body_scale
 	if mana >= 10:
 		spend_mana(10)
 		var b = Bullet.instantiate()
@@ -136,6 +142,7 @@ func shoot(target, spell_scale= 1):
 		get_tree().root.add_child(b)
 		
 func wall_shield (target, shield_scale = 1):
+	shield_scale *= body_scale
 	var w = Wall.instantiate()
 	var dist_from_cust = 20
 	v = global_position.direction_to(target)
@@ -144,6 +151,17 @@ func wall_shield (target, shield_scale = 1):
 	w.rotation = v2.angle()
 	w.scale = Vector2(shield_scale, shield_scale)
 	get_tree().root.get_node("World").add_child(w)##################or up in tree
+	
+func call_mob(target, mob_scale = 0.5):
+	mob_scale *= body_scale
+	if mana >= 10:
+		spend_mana(10)
+		var b = Mob.instantiate()
+		var dist_from_cust = 20
+		v = global_position.direction_to(target)
+		b.position = position + v * dist_from_cust
+		b.body_scale = mob_scale
+		get_tree().root.add_child(b)
 	
 func shield ():
 	if shield_branch == 4:

@@ -29,7 +29,7 @@ func _physics_process(delta):
 func going(target, speed_up_target):
 	if target != null:
 		v = global_position.direction_to(target.global_position)
-		#attack (15)			
+		attack (15)			
 		ind = round(4*(v.angle()/PI))+ 4
 		if ind > 7:
 			ind = 0

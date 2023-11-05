@@ -24,6 +24,8 @@ func _input(event):
 			speed_up(get_global_mouse_position())	
 		if event.keycode == KEY_R:
 			shoot(get_global_mouse_position())
+		if event.keycode == KEY_T:
+			call_mob(get_global_mouse_position())
 			
 		
 func going (target, speed_up_target):
