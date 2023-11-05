@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjpcm6r0dghkc"
-path="res://.godot/imported/fire_spell_attack.png-8209f7499f2acff7af37b1bafd0427e6.ctex"
+uid="uid://c3gv6w5ou6svi"
+path="res://.godot/imported/bar_under.png-0c0640d51fd0e6c5ab7ddc079148657a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://fire_spell_attack.png"
-dest_files=["res://.godot/imported/fire_spell_attack.png-8209f7499f2acff7af37b1bafd0427e6.ctex"]
+source_file="res://assets/bars/bar_under.png"
+dest_files=["res://.godot/imported/bar_under.png-0c0640d51fd0e6c5ab7ddc079148657a.ctex"]
 
 [params]
 
