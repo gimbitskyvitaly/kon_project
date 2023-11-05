@@ -28,23 +28,22 @@ func _input(event):
 		
 func going (target, speed_up_target):
 	if target == null:
-		print (target)
 		return
 	if speed_up_target != null:
 		target = speed_up_target
 	v = global_position.direction_to(target)
-	if global_position.distance_to(target) < 10:
-		v = Vector2.ZERO
-	attack (15)
-	if global_position.distance_to(target) < 10 and is_attacking == false:
-		$AnimationPlayer.play ("attack_" + "down")
-		return
-	else:
-		is_going = true
-		velocity = v * speed			
+	if global_position.distance_to(target) < 15:
+			v = Vector2.ZERO
+	attack (15)			
 	ind = round(4*(v.angle()/PI))+ 4
 	if ind > 7:
 		ind = 0
+	if global_position.distance_to(target) >= 15:
+		is_going = true
+		velocity = v * speed
+	else:
+		$AnimationPlayer.play ("attack_" + "down")
+		return
 	if is_speed_up == true:
 		v = global_position.direction_to(speed_up_target)
 		velocity *= 5

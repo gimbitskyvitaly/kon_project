@@ -20,7 +20,7 @@ var is_hide = false
 var is_speed_up = false
 var is_going = true
 var speed_up_target = null
-var ind = -1
+var ind = -2
 var rng = RandomNumberGenerator.new()
 var hp = 0
 var mana = 0
@@ -71,7 +71,7 @@ func attack (dist_to_attack):
 		var bodyes_dist = get_distance_to_group("Hit")
 		var b_dist_sorted = bodyes_dist[1]
 		if len(b_dist_sorted) > 0 and b_dist_sorted[0] <= dist_to_attack:
-			is_attacking = true
+			#is_attacking = true
 			var body_to_hit = bodyes_dist[0][b_dist_sorted[0]]
 			attack_enemy(body_to_hit)
 		
