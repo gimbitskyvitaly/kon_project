@@ -39,7 +39,10 @@ var body_from_water_shield = null
 var fire_shield_damage = null
 var treshold = 0.5
 
+var start_spell_scale = 1
+var spell_scale = 1
 var body_scale = 1
+var summoner = self
 
 func _ready():
 	add_to_group("Hit")
@@ -152,20 +155,21 @@ func wall_shield (target, shield_scale = 1):
 	w.scale = Vector2(shield_scale, shield_scale)
 	get_tree().root.get_node("World").add_child(w)##################or up in tree
 	
-func call_mob(target, mob_scale = 0.5):
+func call_mob(target, mob_scale = 1):
 	mob_scale *= body_scale
 	if mana >= 10:
 		spend_mana(10)
 		var b = Mob.instantiate()
 		var dist_from_cust = 20
 		v = global_position.direction_to(target)
-		b.position = position + v * dist_from_cust
+		b.position = position + v * dist_from_cust * 3
 		b.body_scale = mob_scale
+		b.summoner = self
 		get_tree().root.add_child(b)
 	
-func shield ():
+func shield (spell_scale = 1):
 	if shield_branch == 4:
-		wall_shield (get_global_mouse_position())
+		wall_shield (get_global_mouse_position(), spell_scale)
 		return
 	$Area_Shield/Shield.disabled = !$Area_Shield/Shield.disabled
 	$Area_Shield/Sprite2D.visible = not $Area_Shield/Sprite2D.visible
@@ -205,7 +209,7 @@ func get_water_shield ():
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("Hit"):
 		#print ("hit")
-		body.take_damage(rng.randf_range(-1.0, 1))
+		body.take_damage(rng.randf_range(-1.0, 1) * body_scale)
 		
 func _on_area_shield_body_entered(body):
 	match shield_branch:
@@ -235,6 +239,7 @@ func _on_area_shield_body_exited(body):
 		body.is_geting_damage_shield[d] = 0
 	body.glob_pos_from_air_shield = null
 	body.fire_shield_damage = null
+	body.body_from_water_shield = null
 	body.speed = body.start_speed 
 	$Area_Shield/Sprite2D.modulate = Color(1, 1, 1, 1)	
 		

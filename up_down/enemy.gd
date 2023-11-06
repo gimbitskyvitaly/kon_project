@@ -45,6 +45,8 @@ func going(target, speed_up_target):
 
 func _on_area_folow_body_entered(body):
 	if body.is_in_group("Player") and body.global_position != global_position:
+		#if body.summoner == summoner:#################333doesent work speed up
+		#	return
 		target_bodies.push_back (body)
 		target_body = target_bodies[-1]
 

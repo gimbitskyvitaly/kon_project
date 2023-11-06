@@ -717,6 +717,7 @@ scale = Vector2(1.72279, 1.51823)
 texture = ExtResource("18_vdkl5")
 
 [node name="player3" parent="." instance=ExtResource("11_gh0rk")]
+Mob = ExtResource("11_gh0rk")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
