@@ -4,19 +4,32 @@ var spell_list = []
 var branch_list = {"destruction": 0, "recovery": 0, "summon": 0, "illusion": 0}
 var element_list = {"air": 0, "fire": 0, "water": 0, "earth": 0}
 
+var camera_controller_on = false
+var serverIP = "127.0.0.1"
+var serverPort = 20001
+var bufferSize = 1024
+var UDPClientSocket = PacketPeerUDP.new()
+
 func _init():
 	speed = 1
 	start_speed = 1
+	
+	UDPClientSocket.set_dest_address(serverIP, serverPort)
+	UDPClientSocket.connect_to_host(serverIP, serverPort)
 
 	
 func _physics_process(delta):
 	check_get_shield()
 	if Input.is_mouse_button_pressed(1): # when click Left mouse button
 		target = get_global_mouse_position()
+	if camera_controller_on:
+		controller()
 	going (target, speed_up_target)
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_S:
+			camera_controller_on = not camera_controller_on
 		if event.keycode == KEY_ENTER:
 			check_spell_list()
 		spell_list.append(event.keycode - 48)
@@ -80,6 +93,14 @@ func going (target, speed_up_target):
 	velocity += v * add_v
 	animate_going(ind)
 	move_and_collide(velocity)
+	
+	
+func controller():
+	var message = "camera_controller".to_ascii_buffer()
+	UDPClientSocket.put_packet(message)
+	var bytesAddressPair = UDPClientSocket.get_packet()
+	var receivedMessage = bytesAddressPair.get_string_from_utf8()
+	print(receivedMessage)
 	
 	
 
