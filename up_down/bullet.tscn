@@ -21,4 +21,5 @@ texture = ExtResource("2_3xyb7")
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_lnibl")
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="body_entered" from="area" to="." method="_on_area_body_entered"]
