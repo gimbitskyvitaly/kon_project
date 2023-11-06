@@ -29,7 +29,7 @@ def write_dataset(gest):
         results = hands.process(image)
         landmarks = results.multi_hand_landmarks
         count_landmarks = 0
-        if landmarks:
+        if landmarks and len(landmarks) == 2:
             for landmark in landmarks:
                 for coordinates in landmark.landmark:
                     data[count_landmarks] = np.array([coordinates.x, coordinates.y, coordinates.z])

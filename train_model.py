@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from catboost import CatBoostClassifier, Pool
 
 output_folder = 'dataset'
-gests = ['reconstruction', 'illusion', 'destruction', 'kon', 'stop', 'unk']
+gests = ['two_hands_fire', 'two_hands_water', 'two_hands_stone', 'two_hands_wind', 'two_hands_stop', 'two_hands_unk']
 X = {}
 
 for gest in  gests:
@@ -27,7 +27,7 @@ y = []
 
 for i, gest in enumerate(gests):
     for feature in data[gest]:
-        X.append(feature[:63])
+        X.append(feature[:126])
         y.append(i)
 
 X = np.array(X)
@@ -42,4 +42,4 @@ print(model.score(X_test, y_test))
 print(model.predict_proba(X_test))
 print(y_test)
 
-model.save_model('gest_model')
+model.save_model('two_hands_gest_model')

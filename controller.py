@@ -12,7 +12,7 @@ class gest_controller():
         self.hands = mp.solutions.hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
         self.model_dir = 'gest_model'
-        self.two_hands_model_dir = 'gest_model'
+        self.two_hands_model_dir = 'two_hands_gest_model'
         self.model = CatBoostClassifier()
         self.model.load_model(self.model_dir)
         self.two_hands_model = CatBoostClassifier()
@@ -21,9 +21,10 @@ class gest_controller():
         self.video = video
 
         self.gest_list = []
-        self.prev_gest = [None] * 3
+        self.prev_gest = [None] * 4
 
         self.gests = ['reconstruction', 'illusion', 'destruction', 'kon', 'stop', 'unk']
+        self.two_hands_gests = ['fire', 'water', 'stone', 'wind', 'stop', 'unk']
 
         self.frame = np.zeros(126)
 
@@ -53,9 +54,10 @@ class gest_controller():
     def parse_gest(self):
         begin_iter = 0
         parse_list = []
+        print('input_list', self.gest_list)
         self.gest_list = self.replace_subarrays('unk')
         for i in np.arange(len(self.gest_list) - 2):
-            if self.gest_list[i] == 'space':
+            if self.gest_list[i] == 'space' and i > begin_iter:
                 count = Counter(self.gest_list[begin_iter:i])
                 gest = count.most_common()[0][0]
                 parse_list.append(gest)
@@ -74,28 +76,30 @@ class gest_controller():
         landmarks = results.multi_hand_landmarks
         count_landmarks = 0
         if landmarks:
-            if landmarks:
-                for landmark in landmarks:
-                    for coordinates in landmark.landmark:
-                        if count_landmarks < 42:
-                            self.data[count_landmarks] = np.array([coordinates.x, coordinates.y, coordinates.z])
-                        count_landmarks += 1
-                        if count_landmarks == 42:
-                            break
+            for landmark in landmarks:
+                for coordinates in landmark.landmark:
+                    if count_landmarks < 42:
+                        self.data[count_landmarks] = np.array([coordinates.x, coordinates.y, coordinates.z])
+                    count_landmarks += 1
+                    if count_landmarks == 42:
+                        break
 
-                self.frame = self.data.flatten()
-                if len(landmarks) == 1:
-                    y = self.model.predict(self.frame)
-                else:
-                    y = self.two_hands_model.predict(self.frame)
+            self.frame = self.data.flatten()
+            if len(landmarks) == 1:
+                y = self.model.predict(self.frame)
                 #print(self.model.predict_proba(self.frame))
                 gest = self.gests[y[0]]
-            self.gest_list.append(gest)
-            for i in np.arange(len(self.prev_gest) - 1):
-                self.prev_gest[i] = self.prev_gest[i + 1]
-            self.prev_gest[len(self.prev_gest) - 1] = gest
-            if self.prev_gest == ['stop'] * 3:
-                return self.parse_gest()
+            else:
+                y = self.two_hands_model.predict(self.frame)
+                gest = self.two_hands_gests[y[0]]
+        else:
+            gest = 'unk'
+        self.gest_list.append(gest)
+        for i in np.arange(len(self.prev_gest) - 1):
+            self.prev_gest[i] = self.prev_gest[i + 1]
+        self.prev_gest[len(self.prev_gest) - 1] = gest
+        if self.prev_gest == ['stop'] * 4:
+            return self.parse_gest()
 
             # return gest
 

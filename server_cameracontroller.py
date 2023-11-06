@@ -55,6 +55,7 @@ def server_rec_send():
         #     break
 
         coord, gest = contr.controller_iteration()
+        print('controller', gest)
         bytesToSend = str(coord) + ' ' + str(gest)
         UDPServerSocket.sendto(bytesToSend.encode('utf-8'), address)
 
