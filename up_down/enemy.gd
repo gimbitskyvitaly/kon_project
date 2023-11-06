@@ -14,13 +14,9 @@ func _init():
 	
 func _physics_process(delta):
 	check_get_shield()
-	
-	process_burn_damage()
-	process_slowdown()
-	process_throwback()
-	
 	if Input.is_mouse_button_pressed(1): # when click Left mouse button
 		target = get_global_mouse_position()
+		
 		
 	if target_body != null:
 		if i % 100 == 0:
@@ -33,7 +29,7 @@ func _physics_process(delta):
 func going(target, speed_up_target):
 	if target != null:
 		v = global_position.direction_to(target.global_position)
-		#attack (15)			
+		attack (15)			
 		ind = round(4*(v.angle()/PI))+ 4
 		if ind > 7:
 			ind = 0
@@ -49,6 +45,8 @@ func going(target, speed_up_target):
 
 func _on_area_folow_body_entered(body):
 	if body.is_in_group("Player") and body.global_position != global_position:
+		#if body.summoner == summoner:#################333doesent work speed up
+		#	return
 		target_bodies.push_back (body)
 		target_body = target_bodies[-1]
 

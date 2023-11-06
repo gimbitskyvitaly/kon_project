@@ -1,8 +1,7 @@
-[gd_scene load_steps=50 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=48 format=3 uid="uid://bty64qnvxh8v2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
-[ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
 [ext_resource type="PackedScene" uid="uid://di3lckvu2xiom" path="res://wall.tscn" id="3_awcp3"]
 [ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="3_gk7s6"]
 [ext_resource type="Texture2D" uid="uid://dg4jgtimfmg44" path="res://energy_shield.png" id="5_y1160"]
@@ -10,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://ca8e3ibjrsyh1" path="res://assets/bars/health_bar.png" id="8_nsa2m"]
 [ext_resource type="Script" path="res://scripts/bars/health_bar.gd" id="9_wieh3"]
 [ext_resource type="Texture2D" uid="uid://dg4e4cpgxpgio" path="res://assets/bars/mana_bar.png" id="10_nxxiy"]
+[ext_resource type="PackedScene" uid="uid://b2m7682qcv8n4" path="res://enemy.tscn" id="11_gh0rk"]
 [ext_resource type="Script" path="res://scripts/bars/mana_bar.gd" id="11_rum7f"]
 [ext_resource type="Script" path="res://scripts/bars/stamina_bar.gd" id="11_sr0oo"]
 [ext_resource type="Texture2D" uid="uid://dd0nkhaiiaykq" path="res://assets/bars/stamina_bar.png" id="12_vcx1e"]
@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://cfid131ujfo41" path="res://FX052_03.png" id="16_j8gjv"]
 [ext_resource type="Texture2D" uid="uid://bw8imb2btk2xy" path="res://FX052_04.png" id="17_rt5v5"]
 [ext_resource type="Texture2D" uid="uid://dsy3ts75q3jkk" path="res://scripts/bars/extras/mushroom.jpg" id="18_vdkl5"]
-[ext_resource type="Script" path="res://spells.gd" id="20_1pw4t"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0adtm"]
 radius = 4.0
@@ -444,9 +443,6 @@ _data = {
 "poof": SubResource("Animation_gioep")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8sesh"]
-radius = 63.3877
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_etfrr"]
 texture = ExtResource("14_o4v0y")
 3:0/0 = 0
@@ -626,6 +622,7 @@ position = Vector2(548, 278)
 script = ExtResource("1_t265y")
 Bullet = ExtResource("3_gk7s6")
 Wall = ExtResource("3_awcp3")
+Mob = ExtResource("11_gh0rk")
 
 [node name="Sprite2D" type="Sprite2D" parent="player"]
 texture = ExtResource("2_bjj5n")
@@ -699,7 +696,6 @@ disabled = true
 visible = false
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("5_y1160")
-metadata/element = ""
 
 [node name="AnimatedPoof" type="AnimatedSprite2D" parent="player"]
 visible = false
@@ -720,86 +716,8 @@ position = Vector2(4.00002, 32)
 scale = Vector2(1.72279, 1.51823)
 texture = ExtResource("18_vdkl5")
 
-[node name="Label" type="Label" parent="player"]
-offset_right = 40.0
-offset_bottom = 23.0
-horizontal_alignment = 1
-
-[node name="player3" type="CharacterBody2D" parent="."]
-position = Vector2(598, 278)
-script = ExtResource("3_a1tvb")
-Bullet = ExtResource("3_gk7s6")
-
-[node name="Sprite2D" type="Sprite2D" parent="player3"]
-modulate = Color(1, 0, 0, 1)
-texture = ExtResource("2_bjj5n")
-hframes = 24
-vframes = 8
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player3"]
-position = Vector2(0, 2)
-shape = SubResource("CapsuleShape2D_0adtm")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="player3"]
-audio_max_polyphony = 76
-libraries = {
-"": SubResource("AnimationLibrary_0h7ub")
-}
-
-[node name="Camera2D" type="Camera2D" parent="player3"]
-zoom = Vector2(5, 5)
-position_smoothing_enabled = true
-
-[node name="Area2D" type="Area2D" parent="player3"]
-
-[node name="CollisionShape2D_left" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(-8, -1)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_right" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(8, -1)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_down" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(0, 12)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_up" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(0, -12)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_right_up" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(7, -8)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_right_down" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(7, 7)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_left_down" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(-7, 7)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="CollisionShape2D_left_up" type="CollisionShape2D" parent="player3/Area2D"]
-position = Vector2(-7, -8)
-shape = SubResource("RectangleShape2D_evglk")
-disabled = true
-
-[node name="area_folow" type="Area2D" parent="player3"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player3/area_folow"]
-shape = SubResource("CircleShape2D_8sesh")
-
-[node name="Label" type="Label" parent="player3"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="player3" parent="." instance=ExtResource("11_gh0rk")]
+Mob = ExtResource("11_gh0rk")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -871,15 +789,8 @@ layer_2/y_sort_origin = 0
 layer_2/z_index = 0
 layer_2/tile_data = PackedInt32Array()
 
-[node name="Wizard" type="Node" parent="."]
-script = ExtResource("20_1pw4t")
-
 [connection signal="animation_finished" from="player/AnimationPlayer" to="player" method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="player/Area2D" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="player/Area_Shield" to="player" method="_on_area_shield_body_entered"]
 [connection signal="body_exited" from="player/Area_Shield" to="player" method="_on_area_shield_body_exited"]
 [connection signal="animation_finished" from="player/PoofPlayer" to="player" method="_on_poof_player_animation_finished"]
-[connection signal="animation_finished" from="player3/AnimationPlayer" to="player3" method="_on_animation_player_animation_finished"]
-[connection signal="body_entered" from="player3/Area2D" to="player3" method="_on_area_2d_body_entered"]
-[connection signal="body_entered" from="player3/area_folow" to="player3" method="_on_area_folow_body_entered"]
-[connection signal="body_exited" from="player3/area_folow" to="player3" method="_on_area_folow_body_exited"]
