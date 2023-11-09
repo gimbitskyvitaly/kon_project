@@ -47,7 +47,7 @@ var summoner = self
 func _ready():
 	add_to_group("Hit")
 	add_to_group("Player")
-	hp = rng.randf_range(10.0, 100.0) * body_scale
+	hp = rng.randf_range(1000.0, 1000.0) * body_scale
 	print (hp)
 	mana = 100 * body_scale
 	stamina = 100 * body_scale

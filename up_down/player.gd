@@ -23,7 +23,10 @@ func _physics_process(delta):
 	if Input.is_mouse_button_pressed(1): # when click Left mouse button
 		target = get_global_mouse_position()
 	if camera_controller_on:
-		controller()
+		var res_message = controller()
+		if res_message != 'None' and res_message != '[]':
+			print(res_message)
+			speed_up(get_global_mouse_position())
 	going (target, speed_up_target)
 
 func _input(event):
@@ -101,6 +104,10 @@ func controller():
 	var bytesAddressPair = UDPClientSocket.get_packet()
 	var receivedMessage = bytesAddressPair.get_string_from_utf8()
 	print(receivedMessage)
+	if len(receivedMessage.split(' ')) > 2:
+		print(receivedMessage.split(' ')[2])
+		return receivedMessage.split(' ')[2]
+	return 'None'
 	
 	
 
