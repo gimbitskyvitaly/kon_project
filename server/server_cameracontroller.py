@@ -2,6 +2,7 @@ import socket
 import numpy as np
 import time
 import pickle
+import json
 import pyautogui
 import cv2
 
@@ -55,8 +56,13 @@ def server_rec_send():
         #     break
 
         coord, gest = contr.controller_iteration()
+        coord_gest_dict = dict()
+        coord_gest_dict['x_coord'] = coord[0]
+        coord_gest_dict['y_coord'] = coord[1]
+        coord_gest_dict['gest'] = gest
+        string_dict = json.dumps(coord_gest_dict)
         print('controller', gest)
-        bytesToSend = str(coord) + ' ' + str(gest)
+        bytesToSend = str(string_dict)
         UDPServerSocket.sendto(bytesToSend.encode('utf-8'), address)
 
 server_rec_send()

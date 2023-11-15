@@ -75,20 +75,14 @@ class gest_controller():
         results = self.hands.process(image)
         landmarks = results.multi_hand_landmarks
         count_landmarks = 0
-        mpHands = mp.solutions.hands
-        hands = mpHands.Hands(False)
-        npDraw = mp.solutions.drawing_utils
         if landmarks:
             for landmark in landmarks:
-                npDraw.draw_landmarks(frame, landmark, mpHands.HAND_CONNECTIONS)
-                print ("done")
                 for coordinates in landmark.landmark:
                     if count_landmarks < 42:
                         self.data[count_landmarks] = np.array([coordinates.x, coordinates.y, coordinates.z])
                     count_landmarks += 1
                     if count_landmarks == 42:
                         break
-
 
             self.frame = self.data.flatten()
             if len(landmarks) == 1:
@@ -98,9 +92,7 @@ class gest_controller():
             else:
                 y = self.two_hands_model.predict(self.frame)
                 gest = self.two_hands_gests[y[0]]
-            cv2.imshow('python', frame)
         else:
-            cv2.imshow('python', frame)
             gest = 'unk'
         self.gest_list.append(gest)
         for i in np.arange(len(self.prev_gest) - 1):
@@ -165,13 +157,11 @@ class controller():
 
         self.gest_contr = gest_controller(self.video)
         self.camera_contr = camera_controller(self.video)
-        self.npDraw = mp.solutions.drawing_utils
 
         pyautogui.FAILSAFE = False
 
     def controller_iteration(self):
         ret, frame = self.video.read()
-        frame = cv2.flip(frame,1) # Mirror flip
 
         if not ret:
             return 0
