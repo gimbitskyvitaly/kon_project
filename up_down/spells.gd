@@ -126,8 +126,7 @@ func cast_shield(element, params):
 	
 	# replace 3rd arg with all elements
 	remove_spell_effects('shield', params['bodies'], ['fire', 'water', 'air'])
-	shape.disabled = !shape.disabled
-	shape.disabled = !shape.disabled
+	
 	
 	if !prev_shield_element or prev_shield_element == element:
 		shape.disabled = !shape.disabled

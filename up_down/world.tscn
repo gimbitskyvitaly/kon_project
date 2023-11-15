@@ -1,10 +1,11 @@
-[gd_scene load_steps=50 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=52 format=3 uid="uid://bty64qnvxh8v2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
 [ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
 [ext_resource type="PackedScene" uid="uid://di3lckvu2xiom" path="res://wall.tscn" id="3_awcp3"]
 [ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="3_gk7s6"]
+[ext_resource type="PackedScene" uid="uid://d010nnb4m6alq" path="res://mob.tscn" id="4_kv0nd"]
 [ext_resource type="Texture2D" uid="uid://dg4jgtimfmg44" path="res://energy_shield.png" id="5_y1160"]
 [ext_resource type="Texture2D" uid="uid://c3gv6w5ou6svi" path="res://assets/bars/bar_under.png" id="7_8jmjh"]
 [ext_resource type="Texture2D" uid="uid://ca8e3ibjrsyh1" path="res://assets/bars/health_bar.png" id="8_nsa2m"]
@@ -20,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://bw8imb2btk2xy" path="res://FX052_04.png" id="17_rt5v5"]
 [ext_resource type="Texture2D" uid="uid://dsy3ts75q3jkk" path="res://scripts/bars/extras/mushroom.jpg" id="18_vdkl5"]
 [ext_resource type="Script" path="res://spells.gd" id="20_1pw4t"]
+[ext_resource type="Script" path="res://pause.gd" id="20_l540p"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0adtm"]
 radius = 4.0
@@ -626,6 +628,7 @@ position = Vector2(548, 278)
 script = ExtResource("1_t265y")
 Bullet = ExtResource("3_gk7s6")
 Wall = ExtResource("3_awcp3")
+Mob = ExtResource("4_kv0nd")
 
 [node name="Sprite2D" type="Sprite2D" parent="player"]
 texture = ExtResource("2_bjj5n")
@@ -691,13 +694,13 @@ disabled = true
 [node name="Area_Shield" type="Area2D" parent="player"]
 
 [node name="Shield" type="CollisionShape2D" parent="player/Area_Shield"]
-scale = Vector2(2, 2)
+scale = Vector2(4, 4)
 shape = SubResource("CircleShape2D_hu8mb")
 disabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="player/Area_Shield"]
 visible = false
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("5_y1160")
 metadata/element = ""
 
@@ -729,6 +732,7 @@ horizontal_alignment = 1
 position = Vector2(598, 278)
 script = ExtResource("3_a1tvb")
 Bullet = ExtResource("3_gk7s6")
+Mob = ExtResource("4_kv0nd")
 
 [node name="Sprite2D" type="Sprite2D" parent="player3"]
 modulate = Color(1, 0, 0, 1)
@@ -848,6 +852,20 @@ texture_under = ExtResource("7_8jmjh")
 texture_progress = ExtResource("12_vcx1e")
 script = ExtResource("11_sr0oo")
 player = NodePath("../../player")
+
+[node name="unpause" type="Label" parent="CanvasLayer"]
+process_mode = 2
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "press \"O\" to continue"
+script = ExtResource("20_l540p")
+
+[node name="pause" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "press \"P\" to pause"
+script = ExtResource("20_l540p")
 
 [node name="TileMap" type="TileMap" parent="."]
 show_behind_parent = true

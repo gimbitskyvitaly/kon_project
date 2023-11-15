@@ -47,8 +47,16 @@ func _input(event):
 		if event.keycode == KEY_X:
 			wizard.cast_spell('shield', 'air', shield_params)
 		if event.keycode == KEY_C:
-			$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
+			#$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
 			wizard.cast_spell('shield', 'water', shield_params)
+		if event.keycode == KEY_A:		
+			create_mob(get_global_mouse_position())
+			
+			
+			
+		if event.keycode == KEY_P:################################pause
+			get_tree().paused = !get_tree().paused
+			#get_tree().change_scene_to_file("res://control.tscn")
 			
 		
 func going (target, speed_up_target):

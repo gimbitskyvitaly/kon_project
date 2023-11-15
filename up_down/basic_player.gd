@@ -11,6 +11,7 @@ var start_speed = 50
 @export var impulse_speed = -3
 @export var Bullet : PackedScene
 @export var Wall : PackedScene
+@export var Mob : PackedScene
 
 var target = Vector2.ZERO
 var v = Vector2.ZERO
@@ -36,12 +37,15 @@ var shield_radius = 20
 var is_geting_damage_shield = {"air": 0, "fire": 0, "water": 0, "earth": 0}
 var glob_pos_from_air_shield = null
 var body_from_water_shield = null
-var fire_shield_damage = null
+var fire_shield_damage = 0.01
 var treshold = 0.5
 
 var wizard: Node
 
 var burn_damage: float
+
+################################summone
+var summoner = self
 
 func _ready():
 	add_to_group("Hit")
@@ -142,6 +146,17 @@ func shoot(target, spell_scale= 1):
 		b.rotation = v.angle()
 		b.scale = Vector2(spell_scale, spell_scale)
 		get_tree().root.add_child(b)
+		
+func create_mob(target, spell_scale= 1):
+	if mana >= 10:
+		spend_mana(10)
+		var m = Mob.instantiate()
+		var dist_from_cust = 50
+		v = global_position.direction_to(target)
+		m.position = position + v * dist_from_cust
+		m.scale = Vector2(spell_scale, spell_scale)
+		get_tree().root.add_child(m)
+		m.summoner = self
 		
 func wall_shield (target, shield_scale = 1):
 	var w = Wall.instantiate()

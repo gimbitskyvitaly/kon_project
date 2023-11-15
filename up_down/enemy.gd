@@ -8,8 +8,8 @@ var i = 0
 var target_bodies = []
 
 func _init():
-	speed = 0.1
-	start_speed = 0.1
+	speed = 0.2
+	start_speed = 0.2
 	
 	
 func _physics_process(delta):
@@ -19,8 +19,6 @@ func _physics_process(delta):
 	process_slowdown()
 	process_throwback()
 	
-	if Input.is_mouse_button_pressed(1): # when click Left mouse button
-		target = get_global_mouse_position()
 		
 	if target_body != null:
 		if i % 100 == 0:
