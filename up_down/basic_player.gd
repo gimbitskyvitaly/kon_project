@@ -30,6 +30,9 @@ var dir_anim = ["left", "left_up", "up", "right_up", "right", "right_down", "dow
 var slowdown_center = null
 #var animation_player: AnimationPlayer
 
+var next_spell
+var elements = []
+
 #############################shield
 var shield_branch = 0
 var shield_radius = 20
@@ -275,6 +278,7 @@ func get_distance_to_group(group):
 	
 func process_burn_damage():
 	if burn_damage > 0:
+		print('AUCH')
 		take_damage(burn_damage)
 		
 func process_slowdown():

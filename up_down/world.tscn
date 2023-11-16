@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=56 format=3 uid="uid://bty64qnvxh8v2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
@@ -19,7 +19,13 @@
 [ext_resource type="Texture2D" uid="uid://cfid131ujfo41" path="res://FX052_03.png" id="16_j8gjv"]
 [ext_resource type="Texture2D" uid="uid://bw8imb2btk2xy" path="res://FX052_04.png" id="17_rt5v5"]
 [ext_resource type="Texture2D" uid="uid://dsy3ts75q3jkk" path="res://scripts/bars/extras/mushroom.jpg" id="18_vdkl5"]
+[ext_resource type="Texture2D" uid="uid://cvumrmtlpaw63" path="res://bullet.png" id="19_cp5f6"]
+[ext_resource type="Texture2D" uid="uid://bvw06fr3sd4ug" path="res://air.png" id="19_m1rh1"]
 [ext_resource type="Script" path="res://spells.gd" id="20_1pw4t"]
+[ext_resource type="Texture2D" uid="uid://w84ujt0b40sl" path="res://fire.png" id="20_ds77p"]
+[ext_resource type="Texture2D" uid="uid://br23nnwl4pg3x" path="res://water.png" id="21_w3eo1"]
+[ext_resource type="Texture2D" uid="uid://c253pkl2cfoyh" path="res://earth.png" id="22_y6x68"]
+[ext_resource type="Texture2D" uid="uid://cnjgx7isuh0ex" path="res://shield.png" id="23_1rnpy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0adtm"]
 radius = 4.0
@@ -723,7 +729,6 @@ texture = ExtResource("18_vdkl5")
 [node name="Label" type="Label" parent="player"]
 offset_right = 40.0
 offset_bottom = 23.0
-horizontal_alignment = 1
 
 [node name="player3" type="CharacterBody2D" parent="."]
 position = Vector2(598, 278)
@@ -797,10 +802,6 @@ disabled = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player3/area_folow"]
 shape = SubResource("CircleShape2D_8sesh")
 
-[node name="Label" type="Label" parent="player3"]
-offset_right = 40.0
-offset_bottom = 23.0
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HealthBar" type="TextureProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
@@ -848,6 +849,60 @@ texture_under = ExtResource("7_8jmjh")
 texture_progress = ExtResource("12_vcx1e")
 script = ExtResource("11_sr0oo")
 player = NodePath("../../player")
+
+[node name="Elements" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_top = 51.0
+offset_right = 71.0
+offset_bottom = 77.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Missile" type="TextureRect" parent="CanvasLayer/Elements"]
+visible = false
+layout_mode = 2
+texture = ExtResource("19_cp5f6")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Shield" type="TextureRect" parent="CanvasLayer/Elements"]
+visible = false
+layout_mode = 2
+texture = ExtResource("23_1rnpy")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Air" type="TextureRect" parent="CanvasLayer/Elements"]
+visible = false
+layout_mode = 2
+texture = ExtResource("19_m1rh1")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Fire" type="TextureRect" parent="CanvasLayer/Elements"]
+visible = false
+layout_mode = 2
+texture = ExtResource("20_ds77p")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Water" type="TextureRect" parent="CanvasLayer/Elements"]
+visible = false
+layout_mode = 2
+texture = ExtResource("21_w3eo1")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Earth" type="TextureRect" parent="CanvasLayer/Elements"]
+visible = false
+layout_mode = 2
+texture = ExtResource("22_y6x68")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="TileMap" type="TileMap" parent="."]
 show_behind_parent = true

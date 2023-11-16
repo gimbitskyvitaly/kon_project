@@ -17,38 +17,93 @@ func _input(event):
 	for body in shield_overlapping_bodies:
 		if !body.is_in_group('Player'):
 			shield_overlapping_bodies.erase(body)
-	var shield_params = {
-		'shape': $Area_Shield/Shield, 
-		'sprite': $Area_Shield/Sprite2D,
-		'bodies': shield_overlapping_bodies
-	}
 	
-	var missile_params = {
-		'target': get_global_mouse_position(),
-		'caster': self,
-		'scene': get_tree().root
+	var params = {
+		'shield': {
+			'shape': $Area_Shield/Shield, 
+			'sprite': $Area_Shield/Sprite2D,
+			'bodies': shield_overlapping_bodies
+		}, 
+		'missile': {
+			'target': get_global_mouse_position(),
+			'caster': self,
+			'scene': get_tree().root
+		}
 	}
 	
 	if event is InputEventKey and event.pressed:
-		shield_branch = event.keycode - 48
-		if shield_branch >= 1 and shield_branch <= 4:
-			shield()
-		print (shield_branch)
+#		shield_branch = event.keycode - 48
+#		if shield_branch >= 1 and shield_branch <= 4:
+#			shield()
+#		print (shield_branch)
+		var elements_box = get_tree().root.get_node("World").get_node('CanvasLayer').get_node('Elements')
+		if event.keycode == KEY_1:
+			var icon = elements_box.get_node('Water')
+			icon.visible = !icon.visible
+			if elements.has('water'):
+				elements.erase('water')
+			else:
+				elements.append('water')
+		if event.keycode == KEY_2:
+			var icon = elements_box.get_node('Fire')
+			icon.visible = !icon.visible			
+			if elements.has('fire'):
+				elements.erase('fire')
+			else:
+				elements.append('fire')
+		if event.keycode == KEY_3:
+			var icon = elements_box.get_node('Air')
+			icon.visible = !icon.visible	
+			if 'air' in elements:
+				elements.erase('air')
+			else:
+				elements.append('air')
+		if event.keycode == KEY_4:
+			var icon = elements_box.get_node('Earth')
+			icon.visible = !icon.visible	
+			if 'earth' in elements:
+				elements.erase('earth')
+			else:
+				elements.append('earth')
+		if event.keycode == KEY_V:
+			var icon = elements_box.get_node('Shield')
+			icon.visible = !icon.visible	
+			elements_box.get_node('Missile').visible = false
+			next_spell = 'shield'
+		if event.keycode == KEY_B:
+			var icon = elements_box.get_node('Missile')
+			icon.visible = !icon.visible	
+			elements_box.get_node('Shield').visible = false
+			next_spell = 'missile'
+		if event.keycode == KEY_SPACE:
+#			var missile_icon = elements_box.get_node('Missile')
+#			missile_icon.visible = false
+#			var shield_icon = elements_box.get_node('Shield')
+#			shield_icon.visible = false
+			print(next_spell, elements)
+			for element in elements:
+				wizard.cast_spell(next_spell, element, params[next_spell])
+#			next_spell = null
+#			elements = []
+
+			
 		if event.keycode == KEY_W:
 			invise()
 		if event.keycode == KEY_E:
 			speed_up(get_global_mouse_position())	
 		if event.keycode == KEY_R:
-			wizard.cast_spell('missile', 'fire', missile_params)
+			wizard.cast_spell('missile', 'fire', params['missile'])
 		if event.keycode == KEY_T:
-			wizard.cast_spell('missile', 'air', missile_params)
+			wizard.cast_spell('missile', 'air', params['missile'])
+		if event.keycode == KEY_Y:
+			wizard.cast_spell('missile', 'water', params['missile'])
 		if event.keycode == KEY_Z:
-			wizard.cast_spell('shield', 'fire', shield_params)
+			wizard.cast_spell('shield', 'fire', params['shield'])
 		if event.keycode == KEY_X:
-			wizard.cast_spell('shield', 'air', shield_params)
+			wizard.cast_spell('shield', 'air', params['shield'])
 		if event.keycode == KEY_C:
-			$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
-			wizard.cast_spell('shield', 'water', shield_params)
+#			$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
+			wizard.cast_spell('shield', 'water', params['shield'])
 			
 		
 func going (target, speed_up_target):

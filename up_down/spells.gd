@@ -22,7 +22,8 @@ var spell_effects = {
 	},
 	'missile': {
 		'fire': 'strike',
-		'air': 'throwback'
+		'air': 'throwback',
+		'water': 'slowdown'
 	}
 }
 
@@ -33,8 +34,13 @@ var default_spell_params = {
 			'removed': {'damage': 0.00}
 		},
 		'water': {
-			'created': {}, # self reference required, processed separately
-			'removed': {'slowdown_center': null}
+			'created': {
+				'color': Color(0, 0, 1, 1)
+				}, # + self reference required, processed separately
+			'removed': {
+				'color': Color(1, 1, 1, 1),
+				'slowdown_center': null
+				}
 		},
 		'air': {
 			'created': {}, # self reference required, processed separately
@@ -44,11 +50,20 @@ var default_spell_params = {
 	'missile': {
 		'fire': {
 			'created': {'damage': 5.0},
-#			'removed': {'damage': 0.00}
+			'removed': {'damage': 0.00}
 		},
 		'air': {
 			'created': {}, # self reference required, processed separately
 			'removed': {'global_position': null}
+		},
+		'water': {
+			'created': {
+				'color': Color(0, 0, 1, 1)
+				}, # + self reference required, processed separately
+			'removed': {
+				'color': Color(1, 1, 1, 1),
+				'slowdown_center': null
+				}
 		}
 	}
 }
@@ -94,7 +109,9 @@ func process_fire_strike_effect(params):
 func process_water_slowdown_effect(params):
 	var body = params['body']
 	var slowdown_center = params['slowdown_center']
+	var color = params['color']
 	body.slowdown_center = slowdown_center
+	body.modulate = color
 	
 func process_air_throwback_effect(params):
 	var body = params['body']
