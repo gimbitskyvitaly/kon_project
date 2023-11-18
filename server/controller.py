@@ -145,7 +145,7 @@ class camera_controller():
 
             cv2.waitKey(1)
 
-            return np.round(landmark.x - self.x_f, 2), np.round(landmark.y - self.y_f)
+            return landmark.x - self.x_f, landmark.y - self.y_f
 
         cv2.waitKey(1)
 
