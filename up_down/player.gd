@@ -104,9 +104,10 @@ func controller():
 	var bytesAddressPair = UDPClientSocket.get_packet()
 	var receivedMessage = bytesAddressPair.get_string_from_utf8()
 	print(receivedMessage)
-	if len(receivedMessage.split(' ')) > 2:
-		print(receivedMessage.split(' ')[2])
-		return receivedMessage.split(' ')[2]
+	var json_dict = JSON.new()
+	json_dict.parse(receivedMessage)
+	var coord_gest_dict = json_dict.get_data()
+	print(coord_gest_dict)
 	return 'None'
 	
 	
