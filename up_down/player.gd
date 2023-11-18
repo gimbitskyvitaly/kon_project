@@ -24,9 +24,21 @@ func _physics_process(delta):
 		target = get_global_mouse_position()
 	if camera_controller_on:
 		var res_message = controller()
-		if res_message != 'None' and res_message != '[]':
-			print(res_message)
-			speed_up(get_global_mouse_position())
+		if res_message:
+			var gest_list = []
+			if res_message['gest']:
+				gest_list = res_message['gest']
+				print(gest_list)
+			var alpha_x = 1000000
+			var alpha_y = 2000000
+			var min_r = 0.0
+			var dir_x = res_message['x_coord']
+			var dir_y = res_message['y_coord']
+			var r = sqrt(dir_x**2 + dir_y**2)
+			if r < min_r:
+				dir_x = 0
+				dir_y = 0
+			target = global_position + Vector2(alpha_x * dir_x, alpha_y * dir_y)
 	going (target, speed_up_target)
 
 func _input(event):
@@ -103,12 +115,10 @@ func controller():
 	UDPClientSocket.put_packet(message)
 	var bytesAddressPair = UDPClientSocket.get_packet()
 	var receivedMessage = bytesAddressPair.get_string_from_utf8()
-	print(receivedMessage)
-	var json_dict = JSON.new()
-	json_dict.parse(receivedMessage)
-	var coord_gest_dict = json_dict.get_data()
-	print(coord_gest_dict)
-	return 'None'
+	var coord_gest_dict = str_to_var(receivedMessage)
+	if coord_gest_dict:
+		return coord_gest_dict
+	return null
 	
 	
 
