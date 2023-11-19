@@ -7,6 +7,25 @@ from collections import Counter
 import mediapipe as mp
 from catboost import CatBoostClassifier
 
+
+def count_gest_list(gest_list):
+    result_list = []
+    if len(gest_list) == 0:
+        return result_list
+    count_gest = 1
+    min_count = 5
+    for i in np.arange(1, len(gest_list)):
+        gest = gest_list[i]
+        if gest == gest_list[i - 1]:
+            count_gest += 1
+            if count_gest == min_count and (len(result_list) == 0 or result_list[-1] != gest):
+                result_list.append(gest)
+        else:
+            count_gest = 1
+
+    return result_list
+
+
 class gest_controller():
     def __init__(self, video):
         self.hands = mp.solutions.hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
@@ -56,18 +75,21 @@ class gest_controller():
         parse_list = []
         print('input_list', self.gest_list)
         self.gest_list = self.replace_subarrays('unk')
-        for i in np.arange(len(self.gest_list) - 2):
-            if self.gest_list[i] == 'space' and i > begin_iter:
-                count = Counter(self.gest_list[begin_iter:i])
-                gest = count.most_common()[0][0]
-                parse_list.append(gest)
-                begin_iter = i + 1
-        if len(parse_list) == 0 and len(self.gest_list) > 3:
-            count = Counter(self.gest_list[:-3])
-            print(count.most_common())
-            gest = count.most_common()[0][0]
-            parse_list.append(gest)
+        parse_list = count_gest_list(self.gest_list)
         self.gest_list = []
+        print('parse', parse_list)
+        # for i in np.arange(len(self.gest_list) - 2):
+        #     if self.gest_list[i] == 'space' and i > begin_iter:
+        #         count = Counter(self.gest_list[begin_iter:i])
+        #         gest = count.most_common()[0][0]
+        #         parse_list.append(gest)
+        #         begin_iter = i + 1
+        # if len(parse_list) == 0 and len(self.gest_list) > 3:
+        #     count = Counter(self.gest_list[:-3])
+        #     print(count.most_common())
+        #     gest = count.most_common()[0][0]
+        #     parse_list.append(gest)
+        # self.gest_list = []
         return parse_list
 
     def process_gest(self, frame):
