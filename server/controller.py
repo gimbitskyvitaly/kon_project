@@ -135,7 +135,7 @@ class camera_controller():
                     return 0, 0
 
 
-                pyautogui.moveTo(screen_x, screen_y)
+                #pyautogui.moveTo(screen_x, screen_y)
 
             else:
                 return 0, 0

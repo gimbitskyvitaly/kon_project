@@ -60,8 +60,6 @@ def server_rec_send():
         coord_gest_dict['x_coord'] = coord[0]
         coord_gest_dict['y_coord'] = coord[1]
         coord_gest_dict['gest'] = gest
-        if gest:
-            print(coord_gest_dict)
         string_dict = json.dumps(coord_gest_dict)
         print('controller', gest)
         bytesToSend = str(string_dict)
