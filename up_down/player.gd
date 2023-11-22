@@ -26,6 +26,8 @@ func fire_to_closest():
 	)
 
 func _physics_process(delta):
+	speed = 1
+	start_speed = 1
 	check_get_shield()
 	if Input.is_mouse_button_pressed(1): # when click Left mouse button
 		target = get_global_mouse_position()
@@ -150,6 +152,9 @@ func _input(event):
 		if event.keycode == KEY_C:
 #			$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
 			wizard.cast_spell('shield', 'water', params['shield'])
+			
+		if event.keycode == KEY_A:		
+			create_mob(get_global_mouse_position())
 			
 		
 func going (target, speed_up_target):
