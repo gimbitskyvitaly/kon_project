@@ -1,9 +1,5 @@
 extends BasicPlayer
 
-var spell_list = []
-var branch_list = {"destruction": 0, "recovery": 0, "summon": 0, "illusion": 0}
-var element_list = {"air": 0, "fire": 0, "water": 0, "earth": 0}
-
 var camera_controller_on = false
 var serverIP = "127.0.0.1"
 var serverPort = 20001
@@ -13,11 +9,10 @@ var UDPClientSocket = PacketPeerUDP.new()
 func _init():
 	speed = 1
 	start_speed = 1
-	
+
 	UDPClientSocket.set_dest_address(serverIP, serverPort)
 	UDPClientSocket.connect_to_host(serverIP, serverPort)
 
-	
 func _physics_process(delta):
 	check_get_shield()
 	if Input.is_mouse_button_pressed(1): # when click Left mouse button
@@ -28,6 +23,7 @@ func _physics_process(delta):
 			var gest_list = []
 			if res_message['gest']:
 				gest_list = res_message['gest']
+				spell_with_gest(gest_list)
 				print(gest_list)
 			var alpha_x = 1000000
 			var alpha_y = 2000000
@@ -39,51 +35,106 @@ func _physics_process(delta):
 				dir_x = 0
 				dir_y = 0
 			target = global_position + Vector2(alpha_x * dir_x, alpha_y * dir_y)
-	going (target, speed_up_target)
+	going(target, speed_up_target)
 
 func _input(event):
+	var wizard = get_tree().root.get_node("World/Wizard")
+	var shield_overlapping_bodies = $Area_Shield.get_overlapping_bodies()
+	shield_overlapping_bodies.erase(self)
+	for body in shield_overlapping_bodies:
+		if !body.is_in_group('Player'):
+			shield_overlapping_bodies.erase(body)
+	
+	var params = {
+		'shield': {
+			'shape': $Area_Shield/Shield, 
+			'sprite': $Area_Shield/Sprite2D,
+			'bodies': shield_overlapping_bodies
+		}, 
+		'missile': {
+			'target': get_global_mouse_position(),
+			'caster': self,
+			'scene': get_tree().root
+		}
+	}
+	
 	if event is InputEventKey and event.pressed:
+#		shield_branch = event.keycode - 48
+#		if shield_branch >= 1 and shield_branch <= 4:
+#			shield()
+#		print (shield_branch)
 		if event.keycode == KEY_S:
 			camera_controller_on = not camera_controller_on
-		if event.keycode == KEY_ENTER:
-			check_spell_list()
-		spell_list.append(event.keycode - 48)
-		if event.keycode - 48 >= 1 and event.keycode - 48 <= 4:
-			shield_branch = event.keycode - 48
-		if shield_branch >= 1 and shield_branch <= 4:
-			shield(spell_scale)
+		var elements_box = get_tree().root.get_node("World").get_node('CanvasLayer').get_node('Elements')
+		if event.keycode == KEY_1:
+			var icon = elements_box.get_node('Water')
+			icon.visible = !icon.visible
+			if elements.has('water'):
+				elements.erase('water')
+			else:
+				elements.append('water')
+		if event.keycode == KEY_2:
+			var icon = elements_box.get_node('Fire')
+			icon.visible = !icon.visible			
+			if elements.has('fire'):
+				elements.erase('fire')
+			else:
+				elements.append('fire')
+		if event.keycode == KEY_3:
+			var icon = elements_box.get_node('Air')
+			icon.visible = !icon.visible	
+			if 'air' in elements:
+				elements.erase('air')
+			else:
+				elements.append('air')
+		if event.keycode == KEY_4:
+			var icon = elements_box.get_node('Earth')
+			icon.visible = !icon.visible	
+			if 'earth' in elements:
+				elements.erase('earth')
+			else:
+				elements.append('earth')
+		if event.keycode == KEY_V:
+			var icon = elements_box.get_node('Shield')
+			icon.visible = !icon.visible	
+			elements_box.get_node('Missile').visible = false
+			next_spell = 'shield'
+		if event.keycode == KEY_B:
+			var icon = elements_box.get_node('Missile')
+			icon.visible = !icon.visible	
+			elements_box.get_node('Shield').visible = false
+			next_spell = 'missile'
+		if event.keycode == KEY_SPACE:
+#			var missile_icon = elements_box.get_node('Missile')
+#			missile_icon.visible = false
+#			var shield_icon = elements_box.get_node('Shield')
+#			shield_icon.visible = false
+			print(next_spell, elements)
+			for element in elements:
+				wizard.cast_spell(next_spell, element, params[next_spell])
+#			next_spell = null
+#			elements = []
+
+			
 		if event.keycode == KEY_W:
 			invise()
 		if event.keycode == KEY_E:
-			#speed_up_target = get_global_mouse_position()
 			speed_up(get_global_mouse_position())	
 		if event.keycode == KEY_R:
-			shoot(get_global_mouse_position(), spell_scale)
+			wizard.cast_spell('missile', 'fire', params['missile'])
 		if event.keycode == KEY_T:
-			call_mob(get_global_mouse_position(), spell_scale * rng.randf_range(0.5, 1))
+			wizard.cast_spell('missile', 'air', params['missile'])
+		if event.keycode == KEY_Y:
+			wizard.cast_spell('missile', 'water', params['missile'])
+		if event.keycode == KEY_Z:
+			wizard.cast_spell('shield', 'fire', params['shield'])
+		if event.keycode == KEY_X:
+			wizard.cast_spell('shield', 'air', params['shield'])
+		if event.keycode == KEY_C:
+#			$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
+			wizard.cast_spell('shield', 'water', params['shield'])
 			
-func check_spell_list ():
-	for i in spell_list:
-		if i == 17:###############'20'
-			branch_list["destruction"] += 1
-		if i == 18:
-			branch_list["recovery"] += 1
-		if i == 19:
-			branch_list["summon"] += 1
-		if i == 20:
-			branch_list["illusion"] += 1
-		if i == int('1'):
-			element_list['air'] += 1
-		if i == int('2'):
-			element_list['fire'] += 1
-		if i == int('3'):
-			element_list['water'] += 1
-		if i == int('4'):
-			element_list['earth'] += 1
-	print (branch_list, element_list)
-	spell_list = []
-			
-			
+		
 func going (target, speed_up_target):
 	if target == null:
 		return
@@ -103,13 +154,68 @@ func going (target, speed_up_target):
 		$AnimationPlayer.play ("attack_" + "down")
 		return
 	if is_speed_up == true:
-		#v = global_position.direction_to(speed_up_target)
+		v = global_position.direction_to(speed_up_target)
 		velocity *= 5
 	velocity += v * add_v
 	animate_going(ind)
 	move_and_collide(velocity)
-	
-	
+
+
+func spell_with_gest(gest_list):
+	var branch = null
+	var element = null
+	var wizard = get_tree().root.get_node("World/Wizard")
+	var shield_overlapping_bodies = $Area_Shield.get_overlapping_bodies()
+	shield_overlapping_bodies.erase(self)
+	for body in shield_overlapping_bodies:
+		if !body.is_in_group('Player'):
+			shield_overlapping_bodies.erase(body)
+
+	var params = {
+		'shield': {
+			'shape': $Area_Shield/Shield,
+			'sprite': $Area_Shield/Sprite2D,
+			'bodies': shield_overlapping_bodies
+		},
+		'missile': {
+			'target': get_global_mouse_position(),
+			'caster': self,
+			'scene': get_tree().root
+		}
+	}
+	if 'reconstruction' in gest_list:
+		branch = 'reconstruction'
+	if 'illusion' in gest_list:
+		branch = 'illusion'
+		invise()
+	if 'kon' in gest_list:
+		branch = 'kon'
+	if 'destruction' in gest_list:
+		branch = 'destruction'
+	if 'air' in gest_list:
+		element = 'air'
+	if 'water' in gest_list:
+		element = 'water'
+	if 'stone' in gest_list:
+		element = 'water'
+	if 'fire' in gest_list:
+		element = 'fire'
+
+	if not branch:
+		branch = 'destruction'
+
+	if branch == 'destruction':
+		if not element:
+			element = 'fire'
+		wizard.cast_spell('missile', element, params['missile'])
+		return
+	if branch == 'reconstruction':
+		if not element:
+			element = 'water'
+		wizard.cast_spell('shield', element, params['shield'])
+		return
+
+
 func controller():
 	var message = "camera_controller".to_ascii_buffer()
 	UDPClientSocket.put_packet(message)
