@@ -264,7 +264,17 @@ func _on_area_shield_body_exited(body):
 #	body.fire_shield_damage = null
 #	body.speed = body.start_speed 
 #	$Area_Shield/Sprite2D.modulate = Color(1, 1, 1, 1)	
-		
+
+func find_closest_in_group(group_name):
+	var dists = []
+	for body in get_tree().get_nodes_in_group(group_name):
+		if body.global_position != global_position:
+			dists.append(
+				[global_position.distance_to(body.global_position), body]
+			)
+	dists.sort_custom(func(a, b): return a[0] < b[0])
+	return dists[0][1]
+
 func get_distance_to_group(group):
 	var dist = {}
 	for bodyes in get_tree().get_nodes_in_group(group):####################################for current tree

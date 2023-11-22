@@ -6,12 +6,24 @@ var serverPort = 20001
 var bufferSize = 1024
 var UDPClientSocket = PacketPeerUDP.new()
 
+var shooting_tween
+
 func _init():
 	speed = 1
 	start_speed = 1
 
 	UDPClientSocket.set_dest_address(serverIP, serverPort)
 	UDPClientSocket.connect_to_host(serverIP, serverPort)
+
+func fire_to_closest():
+	var closest_body = find_closest_in_group('Player')
+	print(closest_body)
+	wizard.cast_spell('missile', 'fire', {
+		'target': closest_body.global_position,
+		'caster': self,
+		'scene': get_tree().root
+		}
+	)
 
 func _physics_process(delta):
 	check_get_shield()
@@ -64,6 +76,11 @@ func _input(event):
 #			shield()
 #		print (shield_branch)
 		if event.keycode == KEY_S:
+			if not camera_controller_on:
+				shooting_tween = create_tween().set_loops()
+				shooting_tween.tween_callback(fire_to_closest).set_delay(1)
+			else:
+				shooting_tween.kill()
 			camera_controller_on = not camera_controller_on
 		var elements_box = get_tree().root.get_node("World").get_node('CanvasLayer').get_node('Elements')
 		if event.keycode == KEY_1:
