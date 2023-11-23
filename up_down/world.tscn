@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
 [ext_resource type="PackedScene" uid="uid://di3lckvu2xiom" path="res://wall.tscn" id="3_awcp3"]
 [ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="3_gk7s6"]
-[ext_resource type="PackedScene" uid="uid://dfqy3f8e2l463" path="res://mob.tscn" id="4_n1o8s"]
+[ext_resource type="PackedScene" path="res://mob.tscn" id="4_n1o8s"]
 [ext_resource type="Texture2D" uid="uid://dg4jgtimfmg44" path="res://energy_shield.png" id="5_y1160"]
 [ext_resource type="Texture2D" uid="uid://c3gv6w5ou6svi" path="res://assets/bars/bar_under.png" id="7_8jmjh"]
 [ext_resource type="Texture2D" uid="uid://ca8e3ibjrsyh1" path="res://assets/bars/health_bar.png" id="8_nsa2m"]

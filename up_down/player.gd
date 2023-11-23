@@ -78,11 +78,11 @@ func _input(event):
 #			shield()
 #		print (shield_branch)
 		if event.keycode == KEY_S:
-			if not camera_controller_on:
-				shooting_tween = create_tween().set_loops()
-				shooting_tween.tween_callback(fire_to_closest).set_delay(1)
-			else:
-				shooting_tween.kill()
+#			if not camera_controller_on:
+#				shooting_tween = create_tween().set_loops()
+#				shooting_tween.tween_callback(fire_to_closest).set_delay(1)
+#			else:
+#				shooting_tween.kill()
 			camera_controller_on = not camera_controller_on
 		var elements_box = get_tree().root.get_node("World").get_node('CanvasLayer').get_node('Elements')
 		if event.keycode == KEY_1:
@@ -189,6 +189,7 @@ func spell_with_gest(gest_list):
 	var wizard = get_tree().root.get_node("World/Wizard")
 	var shield_overlapping_bodies = $Area_Shield.get_overlapping_bodies()
 	shield_overlapping_bodies.erase(self)
+	var closest_body = find_closest_in_group('Player')
 	for body in shield_overlapping_bodies:
 		if !body.is_in_group('Player'):
 			shield_overlapping_bodies.erase(body)
@@ -200,7 +201,7 @@ func spell_with_gest(gest_list):
 			'bodies': shield_overlapping_bodies
 		},
 		'missile': {
-			'target': get_global_mouse_position(),
+			'target': closest_body.global_position,
 			'caster': self,
 			'scene': get_tree().root
 		}
@@ -212,9 +213,10 @@ func spell_with_gest(gest_list):
 		invise()
 	if 'kon' in gest_list:
 		branch = 'kon'
+		create_mob(get_global_mouse_position())
 	if 'destruction' in gest_list:
 		branch = 'destruction'
-	if 'air' in gest_list:
+	if 'wind' in gest_list:
 		element = 'air'
 	if 'water' in gest_list:
 		element = 'water'
