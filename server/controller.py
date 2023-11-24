@@ -108,6 +108,9 @@ class gest_controller():
 
             self.frame = self.data.flatten()
             if len(landmarks) == 1:
+                # frame = self.frame.reshape(-1, 3)
+                # frame -= frame[0]
+                # frame = frame.flatten()
                 y = self.model.predict(self.frame)
                 #print(self.model.predict_proba(self.frame))
                 gest = self.gests[y[0]]
