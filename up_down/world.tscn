@@ -1,10 +1,11 @@
-[gd_scene load_steps=56 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=58 format=3 uid="uid://bty64qnvxh8v2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
 [ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
 [ext_resource type="PackedScene" uid="uid://di3lckvu2xiom" path="res://wall.tscn" id="3_awcp3"]
 [ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="3_gk7s6"]
+[ext_resource type="PackedScene" path="res://mob.tscn" id="4_n1o8s"]
 [ext_resource type="Texture2D" uid="uid://dg4jgtimfmg44" path="res://energy_shield.png" id="5_y1160"]
 [ext_resource type="Texture2D" uid="uid://c3gv6w5ou6svi" path="res://assets/bars/bar_under.png" id="7_8jmjh"]
 [ext_resource type="Texture2D" uid="uid://ca8e3ibjrsyh1" path="res://assets/bars/health_bar.png" id="8_nsa2m"]
@@ -26,6 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://br23nnwl4pg3x" path="res://water.png" id="21_w3eo1"]
 [ext_resource type="Texture2D" uid="uid://c253pkl2cfoyh" path="res://earth.png" id="22_y6x68"]
 [ext_resource type="Texture2D" uid="uid://cnjgx7isuh0ex" path="res://shield.png" id="23_1rnpy"]
+[ext_resource type="Script" path="res://pause.gd" id="26_tl24s"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0adtm"]
 radius = 4.0
@@ -632,6 +634,7 @@ position = Vector2(548, 278)
 script = ExtResource("1_t265y")
 Bullet = ExtResource("3_gk7s6")
 Wall = ExtResource("3_awcp3")
+Mob = ExtResource("4_n1o8s")
 
 [node name="Sprite2D" type="Sprite2D" parent="player"]
 texture = ExtResource("2_bjj5n")
@@ -904,10 +907,22 @@ texture = ExtResource("22_y6x68")
 expand_mode = 3
 stretch_mode = 5
 
+[node name="pause" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "press \"P\" to pause"
+script = ExtResource("26_tl24s")
+
+[node name="upause" type="Label" parent="CanvasLayer"]
+process_mode = 2
+offset_right = 40.0
+offset_bottom = 23.0
+text = "press \"O\" to continue"
+script = ExtResource("26_tl24s")
+
 [node name="TileMap" type="TileMap" parent="."]
 show_behind_parent = true
 y_sort_enabled = true
-position = Vector2(0, 43)
 tile_set = SubResource("TileSet_ernr6")
 format = 2
 layer_0/name = "grass"
