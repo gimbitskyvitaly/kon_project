@@ -45,7 +45,7 @@ func _on_area_body_entered(body):
 
 
 func _on_tree_exited():
-	if element and hit_body and hit_body.is_in_group("Player") and hit_body.position != position:
+	if element and hit_body != null and hit_body.is_in_group("Player") and hit_body.position != position:
 		print('BULLET EXITED')		
 		var missile_effect = wizard.spell_effects['missile'][element]
 		var missile_params = wizard.default_spell_params['missile'][element]['removed']
