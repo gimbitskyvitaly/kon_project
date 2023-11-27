@@ -120,8 +120,18 @@ func speed_up(pos):
 		if ind > 7:
 			ind = 0
 		$AnimationPlayer.play("attack_" + dir_anim[ind])
-		
+
+func is_bleeding():
+	modulate = Color.WHITE
+	$CPUParticles2D.restart()
+
 func take_damage(d):
+	modulate = Color.RED
+	var auch_tween = create_tween().set_loops(1)
+	auch_tween.tween_callback(is_bleeding).set_delay(0.125)
+	
+	
+	
 	health_changed.emit()
 	if $Label:
 		$Label.text = str(hp)

@@ -1,11 +1,11 @@
-[gd_scene load_steps=58 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=59 format=3 uid="uid://bty64qnvxh8v2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
 [ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
 [ext_resource type="PackedScene" uid="uid://di3lckvu2xiom" path="res://wall.tscn" id="3_awcp3"]
 [ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="3_gk7s6"]
-[ext_resource type="PackedScene" path="res://mob.tscn" id="4_n1o8s"]
+[ext_resource type="PackedScene" uid="uid://dfqy3f8e2l463" path="res://mob.tscn" id="4_n1o8s"]
 [ext_resource type="Texture2D" uid="uid://dg4jgtimfmg44" path="res://energy_shield.png" id="5_y1160"]
 [ext_resource type="Texture2D" uid="uid://c3gv6w5ou6svi" path="res://assets/bars/bar_under.png" id="7_8jmjh"]
 [ext_resource type="Texture2D" uid="uid://ca8e3ibjrsyh1" path="res://assets/bars/health_bar.png" id="8_nsa2m"]
@@ -452,6 +452,12 @@ _data = {
 "poof": SubResource("Animation_gioep")
 }
 
+[sub_resource type="Curve" id="Curve_q5231"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.406593, 103.158), 0.0, 0.0, 0, 0, Vector2(0.412088, -107.368), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sesh"]
 radius = 63.3877
 
@@ -733,13 +739,29 @@ texture = ExtResource("18_vdkl5")
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="player"]
+emitting = false
+amount = 16
+lifetime = 0.2
+one_shot = true
+emission_shape = 1
+emission_sphere_radius = 3.89
+direction = Vector2(1, -1)
+spread = 39.54
+gravity = Vector2(0, -980)
+tangential_accel_min = -22.23
+tangential_accel_max = 36.36
+tangential_accel_curve = SubResource("Curve_q5231")
+scale_amount_min = 0.3
+scale_amount_max = 4.0
+color = Color(1, 0, 0, 1)
+
 [node name="player3" type="CharacterBody2D" parent="."]
 position = Vector2(598, 278)
 script = ExtResource("3_a1tvb")
 Bullet = ExtResource("3_gk7s6")
 
 [node name="Sprite2D" type="Sprite2D" parent="player3"]
-modulate = Color(1, 0, 0, 1)
 texture = ExtResource("2_bjj5n")
 hframes = 24
 vframes = 8
@@ -804,6 +826,23 @@ disabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player3/area_folow"]
 shape = SubResource("CircleShape2D_8sesh")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="player3"]
+emitting = false
+amount = 16
+lifetime = 0.2
+one_shot = true
+emission_shape = 1
+emission_sphere_radius = 3.89
+direction = Vector2(1, -1)
+spread = 39.54
+gravity = Vector2(0, -980)
+tangential_accel_min = -22.23
+tangential_accel_max = 36.36
+tangential_accel_curve = SubResource("Curve_q5231")
+scale_amount_min = 0.3
+scale_amount_max = 4.0
+color = Color(1, 0, 0, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
