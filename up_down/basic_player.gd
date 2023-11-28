@@ -13,6 +13,8 @@ var start_speed = 50
 @export var Wall : PackedScene
 @export var Mob : PackedScene
 
+var death_particles_scene = load("res://death_particles.tscn")
+
 var target = Vector2.ZERO
 var v = Vector2.ZERO
 var add_v = Vector2.ZERO
@@ -129,11 +131,11 @@ func speed_up(pos):
 
 func is_bleeding():
 	modulate = Color.WHITE
-	$CPUParticles2D.restart()
 
 func take_damage(d):
 	modulate = Color.RED
 	var auch_tween = create_tween().set_loops(1)
+	$BloodParticles2D.restart()	
 	auch_tween.tween_callback(is_bleeding).set_delay(0.125)
 	
 	
@@ -144,6 +146,9 @@ func take_damage(d):
 	#print (d)
 	hp -= d
 	if hp <= 0:
+		var s = death_particles_scene.instantiate()
+		s.global_position = global_position - Vector2(15, 15)
+		get_tree().root.get_node("World").add_child(s)
 		queue_free()
 			
 func spend_mana(d):
