@@ -35,7 +35,7 @@ def server_rec_send():
     # ret, frame = video.read()
     # print(ret, frame)
     print('start camera')
-    contr = controller()
+    contr = controller('svm')
     pyautogui.FAILSAFE = False
     #print(video.isOpened())
 
@@ -47,7 +47,11 @@ def server_rec_send():
 
         address = bytesAddressPair[1]
         message = message.decode("utf-8")
-        print(address, message)
+        #print(address, message)
+        if message == 'centrolise_camera':
+            print('centrolise_camera')
+            contr.centrolise_camera()
+        #print(address, message)
         #print(video)
         #ret, frame = video.read()
 
@@ -61,7 +65,7 @@ def server_rec_send():
         coord_gest_dict['y_coord'] = coord[1]
         coord_gest_dict['gest'] = gest
         string_dict = json.dumps(coord_gest_dict)
-        print('controller', gest)
+        #print('controller', gest)
         bytesToSend = str(string_dict)
         UDPServerSocket.sendto(bytesToSend.encode('utf-8'), address)
 

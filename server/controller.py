@@ -6,6 +6,9 @@ import numpy as np
 from collections import Counter
 import mediapipe as mp
 from catboost import CatBoostClassifier
+import pickle
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import LinearSVC
 
 
 def count_gest_list(gest_list):
@@ -13,7 +16,7 @@ def count_gest_list(gest_list):
     if len(gest_list) == 0:
         return result_list
     count_gest = 1
-    min_count = 5
+    min_count = 3
     for i in np.arange(1, len(gest_list)):
         gest = gest_list[i]
         if gest == gest_list[i - 1]:
@@ -27,15 +30,33 @@ def count_gest_list(gest_list):
 
 
 class gest_controller():
-    def __init__(self, video):
+    def __init__(self, video, classifier= 'catboost'):
         self.hands = mp.solutions.hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
+        self.classifier = classifier
 
-        self.model_dir = 'gest_model'
-        self.two_hands_model_dir = 'two_hands_gest_model'
-        self.model = CatBoostClassifier()
-        self.model.load_model(self.model_dir)
-        self.two_hands_model = CatBoostClassifier()
-        self.two_hands_model.load_model(self.two_hands_model_dir)
+        if classifier == 'catboost':
+            self.model_dir = 'gest_model'
+            self.two_hands_model_dir = 'two_hands_gest_model'
+            self.model = CatBoostClassifier()
+            self.model.load_model(self.model_dir)
+            self.two_hands_model = CatBoostClassifier()
+            self.two_hands_model.load_model(self.two_hands_model_dir)
+
+        if classifier == 'knn':
+            self.model_dir = 'one_hand_model_knn'
+            self.two_hands_model_dir = 'two_hands_gest_model_knn'
+            self.model = KNeighborsClassifier()
+            self.model = pickle.load(open(self.model_dir, 'rb'))
+            self.two_hands_model = KNeighborsClassifier()
+            self.two_hands_model = pickle.load(open(self.two_hands_model_dir, 'rb'))
+
+        if classifier == 'svm':
+            self.model_dir = 'one_hand_model_svm'
+            self.two_hands_model_dir = 'two_hands_gest_model_svm'
+            self.model = LinearSVC()
+            self.model = pickle.load(open(self.model_dir, 'rb'))
+            self.two_hands_model = LinearSVC()
+            self.two_hands_model = pickle.load(open(self.two_hands_model_dir, 'rb'))
 
         self.video = video
 
@@ -107,6 +128,8 @@ class gest_controller():
                         break
 
             self.frame = self.data.flatten()
+            if self.classifier != 'catboost':
+                self.frame = np.array([self.frame])
             if len(landmarks) == 1:
                 # frame = self.frame.reshape(-1, 3)
                 # frame -= frame[0]
@@ -123,7 +146,7 @@ class gest_controller():
         for i in np.arange(len(self.prev_gest) - 1):
             self.prev_gest[i] = self.prev_gest[i + 1]
         self.prev_gest[len(self.prev_gest) - 1] = gest
-        if self.prev_gest == ['stop'] * 4:
+        if self.prev_gest == ['stop'] * 4 or self.prev_gest == [self.gest_list[-1]] * 4:
             return self.parse_gest()
 
             # return gest
@@ -139,6 +162,10 @@ class camera_controller():
         self.x_f = 0
         self.y_f = 0
 
+
+    def centrolise_camera(self):
+        self.first_f = True
+
     def process_camera(self, frame):
         frame = cv2.flip(frame, 1)
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -150,6 +177,8 @@ class camera_controller():
             if landmark and landmark.x and landmark.y:
 
                 if self.first_f:
+                    print(self.x_f)
+                    print(self.y_f)
                     self.x_f = landmark.x
                     self.y_f = landmark.y
 
@@ -177,13 +206,17 @@ class camera_controller():
         return 0, 0
 
 class controller():
-    def __init__(self):
+    def __init__(self, classifier= 'catboost'):
         self.video = cv2.VideoCapture(0)
 
-        self.gest_contr = gest_controller(self.video)
+        self.gest_contr = gest_controller(self.video, classifier)
         self.camera_contr = camera_controller(self.video)
 
         pyautogui.FAILSAFE = False
+
+
+    def centrolise_camera(self):
+        self.camera_contr.centrolise_camera()
 
     def controller_iteration(self):
         ret, frame = self.video.read()
