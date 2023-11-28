@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=74 format=3 uid="uid://bty64qnvxh8v2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dg4e4cpgxpgio" path="res://assets/bars/mana_bar.png" id="10_nxxiy"]
 [ext_resource type="Script" path="res://scripts/bars/mana_bar.gd" id="11_rum7f"]
 [ext_resource type="Script" path="res://scripts/bars/stamina_bar.gd" id="11_sr0oo"]
+[ext_resource type="Texture2D" uid="uid://c08gb2aern8ki" path="res://Fox Sprite Sheet.png" id="12_54b57"]
 [ext_resource type="Texture2D" uid="uid://dd0nkhaiiaykq" path="res://assets/bars/stamina_bar.png" id="12_vcx1e"]
 [ext_resource type="Texture2D" uid="uid://bmsjemkpa4xl5" path="res://FX052_01.png" id="14_lvau5"]
 [ext_resource type="Texture2D" uid="uid://qubhcf01u3wg" path="res://zeo254-completed-commission.png" id="14_o4v0y"]
@@ -458,6 +459,112 @@ max_value = 200.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.406593, 103.158), 0.0, 0.0, 0, 0, Vector2(0.412088, -107.368), 0.0, 0.0, 0, 0]
 point_count = 3
 
+[sub_resource type="Animation" id="Animation_4yp1a"]
+resource_name = "fox_jump"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedFoxJump:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5, 6, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ks4r4"]
+_data = {
+"fox_jump": SubResource("Animation_4yp1a")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fsxlr"]
+atlas = ExtResource("12_54b57")
+region = Rect2(0, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_je8ti"]
+atlas = ExtResource("12_54b57")
+region = Rect2(32, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qi5fr"]
+atlas = ExtResource("12_54b57")
+region = Rect2(64, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8qqf"]
+atlas = ExtResource("12_54b57")
+region = Rect2(96, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81otk"]
+atlas = ExtResource("12_54b57")
+region = Rect2(128, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hq0wq"]
+atlas = ExtResource("12_54b57")
+region = Rect2(160, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ertwf"]
+atlas = ExtResource("12_54b57")
+region = Rect2(192, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ja0t"]
+atlas = ExtResource("12_54b57")
+region = Rect2(224, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kp4mk"]
+atlas = ExtResource("12_54b57")
+region = Rect2(256, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_joiuf"]
+atlas = ExtResource("12_54b57")
+region = Rect2(288, 110, 32, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j4m3o"]
+atlas = ExtResource("12_54b57")
+region = Rect2(320, 110, 32, 22)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7t5ww"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fsxlr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_je8ti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qi5fr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8qqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81otk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hq0wq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ertwf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ja0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kp4mk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_joiuf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j4m3o")
+}],
+"loop": true,
+"name": &"default",
+"speed": 18.0
+}]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sesh"]
 radius = 63.3877
 
@@ -721,6 +828,7 @@ visible = false
 position = Vector2(0, -6)
 sprite_frames = SubResource("SpriteFrames_cpuf5")
 animation = &"poof"
+frame = 3
 
 [node name="PoofPlayer" type="AnimationPlayer" parent="player"]
 speed_scale = 2.3
@@ -755,6 +863,18 @@ tangential_accel_curve = SubResource("Curve_q5231")
 scale_amount_min = 0.3
 scale_amount_max = 4.0
 color = Color(1, 0, 0, 1)
+
+[node name="FoxPlayer" type="AnimationPlayer" parent="player"]
+speed_scale = 1.4
+libraries = {
+"": SubResource("AnimationLibrary_ks4r4")
+}
+
+[node name="AnimatedFoxJump" type="AnimatedSprite2D" parent="player"]
+visible = false
+modulate = Color(1, 1, 1, 0.407843)
+sprite_frames = SubResource("SpriteFrames_7t5ww")
+frame_progress = 0.378655
 
 [node name="player3" type="CharacterBody2D" parent="."]
 position = Vector2(598, 278)
@@ -989,6 +1109,8 @@ script = ExtResource("20_1pw4t")
 [connection signal="body_entered" from="player/Area_Shield" to="player" method="_on_area_shield_body_entered"]
 [connection signal="body_exited" from="player/Area_Shield" to="player" method="_on_area_shield_body_exited"]
 [connection signal="animation_finished" from="player/PoofPlayer" to="player" method="_on_poof_player_animation_finished"]
+[connection signal="animation_finished" from="player/FoxPlayer" to="player" method="_on_fox_player_animation_finished"]
+[connection signal="animation_started" from="player/FoxPlayer" to="player" method="_on_fox_player_animation_started"]
 [connection signal="animation_finished" from="player3/AnimationPlayer" to="player3" method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="player3/Area2D" to="player3" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="player3/area_folow" to="player3" method="_on_area_folow_body_entered"]

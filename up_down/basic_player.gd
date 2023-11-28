@@ -50,6 +50,8 @@ var burn_damage: float
 ######################################summoner
 var summoner = self
 
+var is_casting_cirle = false
+
 func _ready():
 	add_to_group("Hit")
 	add_to_group("Player")
@@ -60,6 +62,10 @@ func _ready():
 
 func _on_poof_player_animation_finished(anim_name):
 	$AnimatedPoof.hide()
+	
+func _on_fox_player_animation_finished(anim_name):
+	$AnimatedFoxJump.hide()
+
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name.begins_with("attack"):################attack
@@ -324,4 +330,7 @@ func process_slowdown():
 func process_throwback():
 	if glob_pos_from_air_shield:
 		take_impulse(glob_pos_from_air_shield)
+
+
+	
 	

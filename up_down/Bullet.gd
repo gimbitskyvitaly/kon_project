@@ -23,7 +23,6 @@ func _physics_process(delta):
 
 
 func _on_area_body_entered(body):
-	print('BULLET ENTERED')
 	if element and body.is_in_group("Player") and body.position != position:
 		var missile_effect = wizard.spell_effects['missile'][element]
 		var missile_params = wizard.default_spell_params['missile'][element]['created']

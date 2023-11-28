@@ -71,6 +71,21 @@ func _input(event):
 			'scene': get_tree().root
 		}
 	}
+	var missile_circle_params = []
+	var missiles_count = 15
+	for i in range(missiles_count):
+		var angle = 2 * PI * i / missiles_count
+		var curr_target = global_position + Vector2(cos(angle), sin(angle))
+		missile_circle_params.append({
+			'target': curr_target,
+			'caster': self,
+			'scene': get_tree().root}
+		)
+	var missiles_delays = []
+	for i in range(missiles_count):
+		var curr_delay = i * 0.03
+		missiles_delays.append(curr_delay)
+		
 	
 	if event is InputEventKey and event.pressed:
 #		shield_branch = event.keycode - 48
@@ -152,12 +167,28 @@ func _input(event):
 		if event.keycode == KEY_C:
 #			$Sprite2Dtest.visible = !$Sprite2Dtest.visible			
 			wizard.cast_spell('shield', 'water', params['shield'])
-			
+		if event.keycode == KEY_J:
+			$AnimatedFoxJump.show()
+			$FoxPlayer.play('fox_jump')
+			is_casting_cirle = true
+			create_tween().tween_callback(
+					func(): is_casting_cirle = false
+				).set_delay(missiles_delays.max())
+			for i in range(missiles_count):
+				create_tween().tween_callback(
+						func(): wizard.cast_spell(
+							'missile', 'fire', missile_circle_params[i]
+							)
+					).set_delay(missiles_delays[i])
+#				wizard.cast_spell('missile', 'fire', missile_param)
+#			is_casting_cirle = false
 		if event.keycode == KEY_A:		
 			create_mob(get_global_mouse_position())
 			
 		
 func going (target, speed_up_target):
+	if is_casting_cirle:
+		return
 	if target == null:
 		return
 	if speed_up_target != null:
@@ -249,7 +280,14 @@ func controller():
 	if coord_gest_dict:
 		return coord_gest_dict
 	return null
-	
-	
 
 
+
+func _on_fox_player_animation_started(anim_name):
+	print('STARTED')
+	create_tween().tween_property($AnimatedFoxJump, "scale", Vector2(7, 7), 0.2)
+	create_tween().tween_property($AnimatedFoxJump, "modulate:a", 0, 0.35).set_delay(0.15)
+	
+	$AnimatedFoxJump.scale = Vector2(1, 1)
+	$AnimatedFoxJump.modulate = Color.WHITE
+	
