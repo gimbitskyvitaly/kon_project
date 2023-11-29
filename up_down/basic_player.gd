@@ -50,8 +50,6 @@ var wizard: Node
 
 var burn_damage: float
 
-var is_beamed = false
-
 ######################################summoner
 var summoner = self
 
@@ -64,7 +62,7 @@ func _ready():
 	mana = 100
 	stamina = 100
 	wizard = get_tree().root.get_node("World/Wizard")
-	
+
 #	beam_ended.connect(func(): modulate = Color.WHITE)
 
 func _on_poof_player_animation_finished(anim_name):
@@ -77,6 +75,8 @@ func _on_fox_player_animation_finished(anim_name):
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name.begins_with("attack"):################attack
 		for dir in dir_anim:
+			if get_node("Area2D/CollisionShape2D_" + dir).disabled == false:
+				print ("atack finished ", self)
 			get_node("Area2D/CollisionShape2D_" + dir).disabled = true
 		is_attacking = false
 		speed_up_target = null########################
@@ -100,7 +100,10 @@ func attack (dist_to_attack):
 			is_attacking = true
 			var body_to_hit = bodyes_dist[0][b_dist_sorted[0]]
 			attack_enemy(body_to_hit)
-		
+			return true
+
+		return false
+
 func attack_enemy (body_to_hit):
 		is_going = false
 		is_attacking = true
@@ -134,13 +137,15 @@ func speed_up(pos):
 			ind = 0
 		$AnimationPlayer.play("attack_" + dir_anim[ind])
 
+func is_bleeding():
+	modulate = Color.WHITE
 
 func take_damage(d):
 	if not is_beamed:
 		print('HERE!')
-		modulate = Color.RED		
+		modulate = Color.RED
 		var auch_tween = create_tween().set_loops(1)
-		$BloodParticles2D.restart()	
+		$BloodParticles2D.restart()
 		auch_tween.tween_callback(func(): modulate = Color.WHITE).set_delay(0.125)
 	
 	

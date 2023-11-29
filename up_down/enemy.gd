@@ -45,7 +45,9 @@ func going(target, speed_up_target):
 			#v = global_position.direction_to(target.position)
 			velocity *= 5
 		velocity += v * add_v
-		animate_going(ind)
+		var has_attacked = attack(15)
+		if has_attacked == false:
+			animate_going(ind)
 		move_and_collide(velocity)
 
 func _on_area_folow_body_entered(body):
