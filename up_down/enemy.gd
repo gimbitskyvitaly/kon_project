@@ -7,6 +7,7 @@ var target_body = null
 var i = 0
 var target_bodies = []
 
+
 func _init():
 	speed = 0.1
 	start_speed = 0.1

@@ -5,6 +5,7 @@ class_name BasicPlayer
 signal health_changed
 signal mana_changed
 signal stamina_changed
+#signal beam_ended
 
 var start_speed = 50
 @export var speed = 50
@@ -49,6 +50,8 @@ var wizard: Node
 
 var burn_damage: float
 
+var is_beamed = false
+
 ######################################summoner
 var summoner = self
 
@@ -61,6 +64,8 @@ func _ready():
 	mana = 100
 	stamina = 100
 	wizard = get_tree().root.get_node("World/Wizard")
+	
+#	beam_ended.connect(func(): modulate = Color.WHITE)
 
 func _on_poof_player_animation_finished(anim_name):
 	$AnimatedPoof.hide()
@@ -129,14 +134,14 @@ func speed_up(pos):
 			ind = 0
 		$AnimationPlayer.play("attack_" + dir_anim[ind])
 
-func is_bleeding():
-	modulate = Color.WHITE
 
 func take_damage(d):
-	modulate = Color.RED
-	var auch_tween = create_tween().set_loops(1)
-	$BloodParticles2D.restart()	
-	auch_tween.tween_callback(is_bleeding).set_delay(0.125)
+	if not is_beamed:
+		print('HERE!')
+		modulate = Color.RED		
+		var auch_tween = create_tween().set_loops(1)
+		$BloodParticles2D.restart()	
+		auch_tween.tween_callback(func(): modulate = Color.WHITE).set_delay(0.125)
 	
 	
 	
