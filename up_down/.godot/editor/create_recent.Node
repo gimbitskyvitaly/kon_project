@@ -1,0 +1,9 @@
+CPUParticles2D
+CanvasLayer
+ShaderGlobalsOverride
+WorldEnvironment
+Line2D
+RayCast2D
+GPUParticles2D
+AnimatedSprite2D
+AnimationPlayer
