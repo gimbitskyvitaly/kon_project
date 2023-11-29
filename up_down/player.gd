@@ -196,7 +196,7 @@ func going (target, speed_up_target):
 	v = global_position.direction_to(target)
 	if global_position.distance_to(target) < 15:
 			v = Vector2.ZERO
-	var has_attacked = attack (15)		
+	attack (15)			
 	ind = round(4*(v.angle()/PI))+ 4
 	if ind > 7:
 		ind = 0
@@ -204,15 +204,13 @@ func going (target, speed_up_target):
 		is_going = true
 		velocity = v * speed
 	else:
-		if has_attacked == false:
-			$AnimationPlayer.play ("attack_" + "down")
-			return	
+		$AnimationPlayer.play ("attack_" + "down")
+		return
 	if is_speed_up == true:
 		v = global_position.direction_to(speed_up_target)
 		velocity *= 5
 	velocity += v * add_v
-	if has_attacked == false:
-		animate_going(ind)
+	animate_going(ind)
 	move_and_collide(velocity)
 
 
