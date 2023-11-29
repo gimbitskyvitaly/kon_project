@@ -36,6 +36,7 @@ var slowdown_center = null
 
 var next_spell
 var elements = []
+var is_beamed = false
 
 #############################shield
 var shield_branch = 0
