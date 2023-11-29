@@ -72,6 +72,8 @@ func _on_fox_player_animation_finished(anim_name):
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name.begins_with("attack"):################attack
 		for dir in dir_anim:
+			if get_node("Area2D/CollisionShape2D_" + dir).disabled == false:
+				print ("atack finished ", self)
 			get_node("Area2D/CollisionShape2D_" + dir).disabled = true
 		is_attacking = false
 		speed_up_target = null########################
@@ -95,6 +97,9 @@ func attack (dist_to_attack):
 			is_attacking = true
 			var body_to_hit = bodyes_dist[0][b_dist_sorted[0]]
 			attack_enemy(body_to_hit)
+			return true
+			
+		return false
 		
 func attack_enemy (body_to_hit):
 		is_going = false
@@ -135,7 +140,7 @@ func is_bleeding():
 func take_damage(d):
 	modulate = Color.RED
 	var auch_tween = create_tween().set_loops(1)
-	$BloodParticles2D.restart()	
+	$BloodParticles2.restart()
 	auch_tween.tween_callback(is_bleeding).set_delay(0.125)
 	
 	
