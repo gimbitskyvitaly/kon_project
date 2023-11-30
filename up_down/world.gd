@@ -22,7 +22,10 @@ func _ready():
 	spawn_tween = create_tween().set_loops(100)
 	spawn_tween.tween_callback(instatiate_enemy).set_delay(1)
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if modulate == Color.WHITE:
+		create_tween().tween_property(self, "modulate", Color.ROYAL_BLUE, 15)
+	if modulate == Color.ROYAL_BLUE:
+		create_tween().tween_property(self, "modulate", Color.WHITE, 15)
 	pass

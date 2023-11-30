@@ -35,7 +35,7 @@ def server_rec_send():
     # ret, frame = video.read()
     # print(ret, frame)
     print('start camera')
-    contr = controller('svm')
+    contr = controller('svm', True)
     pyautogui.FAILSAFE = False
     #print(video.isOpened())
 

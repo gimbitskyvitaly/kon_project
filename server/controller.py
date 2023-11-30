@@ -4,6 +4,7 @@ import pyautogui
 import csv
 import numpy as np
 from collections import Counter
+import copy
 import mediapipe as mp
 from catboost import CatBoostClassifier
 import pickle
@@ -11,12 +12,21 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC
 
 
+def centrolise_array(x):
+    x = x.reshape(-1, 3)
+    mean = np.mean(x, axis= 0)
+    mean = np.array([mean] * len(x))
+    x -= mean
+    x = x.flatten()
+    return x
+
+
 def count_gest_list(gest_list):
     result_list = []
     if len(gest_list) == 0:
         return result_list
     count_gest = 1
-    min_count = 3
+    min_count = 2
     for i in np.arange(1, len(gest_list)):
         gest = gest_list[i]
         if gest == gest_list[i - 1]:
@@ -30,9 +40,10 @@ def count_gest_list(gest_list):
 
 
 class gest_controller():
-    def __init__(self, video, classifier= 'catboost'):
+    def __init__(self, video, classifier= 'catboost', centrolise= True):
         self.hands = mp.solutions.hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
         self.classifier = classifier
+        self.centrolise = centrolise
 
         if classifier == 'catboost':
             self.model_dir = 'gest_model'
@@ -43,16 +54,24 @@ class gest_controller():
             self.two_hands_model.load_model(self.two_hands_model_dir)
 
         if classifier == 'knn':
-            self.model_dir = 'one_hand_model_knn'
-            self.two_hands_model_dir = 'two_hands_gest_model_knn'
+            if centrolise:
+                self.model_dir = 'one_hand_model_centrolised_knn'
+                self.two_hands_model_dir = 'two_hands_gest_model_centrolised_knn'
+            else:
+                self.model_dir = 'one_hand_model_knn'
+                self.two_hands_model_dir = 'two_hands_gest_model_knn'
             self.model = KNeighborsClassifier()
             self.model = pickle.load(open(self.model_dir, 'rb'))
             self.two_hands_model = KNeighborsClassifier()
             self.two_hands_model = pickle.load(open(self.two_hands_model_dir, 'rb'))
 
         if classifier == 'svm':
-            self.model_dir = 'one_hand_model_svm'
-            self.two_hands_model_dir = 'two_hands_gest_model_svm'
+            if centrolise:
+                self.model_dir = 'one_hand_model_centrolised_svm'
+                self.two_hands_model_dir = 'two_hands_gest_model_centrolised_svm'
+            else:
+                self.model_dir = 'one_hand_model_svm'
+                self.two_hands_model_dir = 'two_hands_gest_model_svm'
             self.model = LinearSVC()
             self.model = pickle.load(open(self.model_dir, 'rb'))
             self.two_hands_model = LinearSVC()
@@ -128,6 +147,8 @@ class gest_controller():
                         break
 
             self.frame = self.data.flatten()
+            if self.centrolise:
+                self.frame = centrolise_array(self.frame)
             if self.classifier != 'catboost':
                 self.frame = np.array([self.frame])
             if len(landmarks) == 1:
@@ -146,7 +167,7 @@ class gest_controller():
         for i in np.arange(len(self.prev_gest) - 1):
             self.prev_gest[i] = self.prev_gest[i + 1]
         self.prev_gest[len(self.prev_gest) - 1] = gest
-        if self.prev_gest == ['stop'] * 4 or self.prev_gest == [self.gest_list[-1]] * 4:
+        if self.prev_gest == ['stop'] * 4 or (self.gest_list[-1] != 'unk' and self.prev_gest == [self.gest_list[-1]] * 4):
             return self.parse_gest()
 
             # return gest
@@ -159,8 +180,11 @@ class camera_controller():
         self.video = video
 
         self.first_f = True
-        self.x_f = 0
-        self.y_f = 0
+        self.x_f = np.zeros(25)
+        self.y_f = np.zeros(25)
+
+        self.x_s = np.zeros(25)
+        self.y_s = np.zeros(25)
 
 
     def centrolise_camera(self):
@@ -172,15 +196,19 @@ class camera_controller():
         output = self.face_mesh.process(rgb_frame)
         landmark_points = output.multi_face_landmarks
         if landmark_points:
+            for face_landmarks in landmark_points:
+                for i, landmarkxy in enumerate(face_landmarks.landmark[::20]):
+                    self.x_s[i] = landmarkxy.x
+                    self.y_s[i] = landmarkxy.y
             landmarks = landmark_points[0].landmark
             landmark = landmarks[474:478][1]
             if landmark and landmark.x and landmark.y:
 
                 if self.first_f:
-                    print(self.x_f)
-                    print(self.y_f)
-                    self.x_f = landmark.x
-                    self.y_f = landmark.y
+                    # print(self.x_f)
+                    # print(self.y_f)
+                    self.x_f = copy.deepcopy(self.x_s)
+                    self.y_f = copy.deepcopy(self.y_s)
 
                 screen_x = self.screen_w * landmark.x
                 screen_y = self.screen_h * landmark.y
@@ -198,18 +226,17 @@ class camera_controller():
         #     break
 
             cv2.waitKey(1)
-
-            return landmark.x - self.x_f, landmark.y - self.y_f
+            return np.mean(self.x_s - self.x_f), np.mean(self.y_s - self.y_f)
 
         cv2.waitKey(1)
 
         return 0, 0
 
 class controller():
-    def __init__(self, classifier= 'catboost'):
+    def __init__(self, classifier= 'catboost', centrolise= False):
         self.video = cv2.VideoCapture(0)
 
-        self.gest_contr = gest_controller(self.video, classifier)
+        self.gest_contr = gest_controller(self.video, classifier, centrolise)
         self.camera_contr = camera_controller(self.video)
 
         pyautogui.FAILSAFE = False

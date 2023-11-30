@@ -33,7 +33,7 @@ func _physics_process(delta):
 	if Input.is_mouse_button_pressed(1): # when click Left mouse button
 		target = get_global_mouse_position()
 	if camera_controller_on:
-		var res_message = controller()
+		var res_message = controller('camera_controller')
 		if res_message:
 			var gest_list = []
 			if res_message['gest']:
@@ -100,6 +100,7 @@ func _input(event):
 #			else:
 #				shooting_tween.kill()
 			camera_controller_on = not camera_controller_on
+			controller('centrolise_camera')
 		var elements_box = get_tree().root.get_node("World").get_node('CanvasLayer').get_node('Elements')
 		if event.keycode == KEY_1:
 			var icon = elements_box.get_node('Water')
@@ -272,15 +273,15 @@ func spell_with_gest(gest_list):
 		return
 
 
-func controller():
-	var message = "camera_controller".to_ascii_buffer()
-	UDPClientSocket.put_packet(message)
-	var bytesAddressPair = UDPClientSocket.get_packet()
-	var receivedMessage = bytesAddressPair.get_string_from_utf8()
-	var coord_gest_dict = str_to_var(receivedMessage)
-	if coord_gest_dict:
-		return coord_gest_dict
-	return null
+func controller(message):
+  message = message.to_ascii_buffer()
+  UDPClientSocket.put_packet(message)
+  var bytesAddressPair = UDPClientSocket.get_packet()
+  var receivedMessage = bytesAddressPair.get_string_from_utf8()
+  var coord_gest_dict = str_to_var(receivedMessage)
+  if coord_gest_dict:
+	return coord_gest_dict
+  return null
 
 
 
