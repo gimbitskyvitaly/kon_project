@@ -274,14 +274,14 @@ func spell_with_gest(gest_list):
 
 
 func controller(message):
-  message = message.to_ascii_buffer()
-  UDPClientSocket.put_packet(message)
-  var bytesAddressPair = UDPClientSocket.get_packet()
-  var receivedMessage = bytesAddressPair.get_string_from_utf8()
-  var coord_gest_dict = str_to_var(receivedMessage)
-  if coord_gest_dict:
-	return coord_gest_dict
-  return null
+	message = message.to_ascii_buffer()
+	UDPClientSocket.put_packet(message)
+	var bytesAddressPair = UDPClientSocket.get_packet()
+	var receivedMessage = bytesAddressPair.get_string_from_utf8()
+	var coord_gest_dict = str_to_var(receivedMessage)
+	if coord_gest_dict:
+		return coord_gest_dict
+	return null
 
 
 
