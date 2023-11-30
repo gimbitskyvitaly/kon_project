@@ -40,7 +40,10 @@ func going(target, speed_up_target):
 			ind = 0
 		if global_position.distance_to(target.global_position) <= 1:
 			v = 0
-		velocity = v * speed
+		if v.length() < 100:
+			velocity = v * speed
+		else:
+			velocity = Vector2.ZERO
 		if is_speed_up == true:
 			#v = global_position.direction_to(target.position)
 			velocity *= 5
