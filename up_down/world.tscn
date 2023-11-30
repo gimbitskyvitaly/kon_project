@@ -1,5 +1,6 @@
-[gd_scene load_steps=72 format=3 uid="uid://bty64qnvxh8v2"]
+[gd_scene load_steps=73 format=3 uid="uid://bty64qnvxh8v2"]
 
+[ext_resource type="Script" path="res://world.gd" id="1_3shkx"]
 [ext_resource type="Script" path="res://player.gd" id="1_t265y"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="2_bjj5n"]
 [ext_resource type="Script" path="res://enemy.gd" id="3_a1tvb"]
@@ -705,6 +706,7 @@ sources/0 = SubResource("TileSetAtlasSource_etfrr")
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_3shkx")
 
 [node name="player" type="CharacterBody2D" parent="."]
 y_sort_enabled = true

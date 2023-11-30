@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://oqbnj8wl6b33" path="res://bullet.tscn" id="2_rvwfw"]
 [ext_resource type="Texture2D" uid="uid://dr0nhol1s8q6g" path="res://Warrior-Blue.png" id="3_rv6jx"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0adtm"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n1pv7"]
 radius = 4.0
 height = 14.0
 
@@ -344,18 +344,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_5pcxq"]
 resource_name = "poof"
 length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedPoof:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0, 1, 2, 3]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0h7ub"]
 _data = {
@@ -380,10 +368,10 @@ _data = {
 "poof": SubResource("Animation_5pcxq")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_evglk"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ewcs5"]
 size = Vector2(4.5, 4.5)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8sesh"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_v6h7v"]
 radius = 63.3877
 
 [node name="player3" type="CharacterBody2D"]
@@ -392,14 +380,13 @@ script = ExtResource("1_fpmwu")
 Bullet = ExtResource("2_rvwfw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0, 0, 1)
 texture = ExtResource("3_rv6jx")
 hframes = 24
 vframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
-shape = SubResource("CapsuleShape2D_0adtm")
+shape = SubResource("CapsuleShape2D_n1pv7")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 audio_max_polyphony = 76
@@ -415,48 +402,63 @@ position_smoothing_enabled = true
 
 [node name="CollisionShape2D_left" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-8, -1)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_right" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(8, -1)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_down" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 12)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_up" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -12)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_right_up" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(7, -8)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_right_down" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(7, 7)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_left_down" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-7, 7)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="CollisionShape2D_left_up" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-7, -8)
-shape = SubResource("RectangleShape2D_evglk")
+shape = SubResource("RectangleShape2D_ewcs5")
 disabled = true
 
 [node name="area_folow" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="area_folow"]
-shape = SubResource("CircleShape2D_8sesh")
+shape = SubResource("CircleShape2D_v6h7v")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="BloodParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 30
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+direction = Vector2(0, -1)
+spread = 106.2
+gravity = Vector2(0, 500)
+initial_velocity_min = 56.18
+initial_velocity_max = 146.07
+color = Color(0.713726, 0, 0, 1)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

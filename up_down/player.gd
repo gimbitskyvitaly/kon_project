@@ -26,6 +26,7 @@ func fire_to_closest():
 	)
 
 func _physics_process(delta):
+	print('pos', global_position)
 	speed = 1
 	start_speed = 1
 	check_get_shield()

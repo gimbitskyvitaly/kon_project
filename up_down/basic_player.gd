@@ -67,7 +67,8 @@ func _ready():
 #	beam_ended.connect(func(): modulate = Color.WHITE)
 
 func _on_poof_player_animation_finished(anim_name):
-	$AnimatedPoof.hide()
+	pass
+#	$AnimatedPoof.hide()
 	
 func _on_fox_player_animation_finished(anim_name):
 	$AnimatedFoxJump.hide()
@@ -120,8 +121,8 @@ func invise():
 		if is_hide == true:
 			if mana >= 20:
 				spend_mana(20)
-				$AnimatedPoof.show()
-				$PoofPlayer.play('poof')
+#				$AnimatedPoof.show()
+#				$PoofPlayer.play('poof')
 				create_tween().tween_property($Sprite2D, "modulate:a", 0.05, 0.2)
 		else:
 			create_tween().tween_property($Sprite2D, "modulate:a", 1.0, 0.2)
