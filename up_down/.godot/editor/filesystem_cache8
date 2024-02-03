@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1701378941
+::res://::1706957277
 air.png::CompressedTexture2D::3907376285286133402::1701378873::1701378873::1::::<><>::
 basic_player.gd::GDScript::-1::1701378873::0::1::::BasicPlayer<>CharacterBody2D<>::
 Bullet.gd::GDScript::-1::1701378873::0::1::::<>CharacterBody2D<>::
@@ -7,10 +7,10 @@ bullet.png::CompressedTexture2D::6288854261427005346::1701378873::1701378873::1:
 bullet.tscn::PackedScene::1015758312015136512::1701378873::0::1::::<><>::res://Bullet.gd<>uid://cvumrmtlpaw63
 DeathSlimeIdleSide.png::CompressedTexture2D::971508986227318591::1701378873::1701378873::1::::<><>::
 death_particles.gd::GDScript::-1::1701378873::0::1::::<>CPUParticles2D<>::
-death_particles.tscn::PackedScene::8181495043514029857::1701378873::0::1::::<><>::res://death_particles.gd
+death_particles.tscn::PackedScene::8181495043514029857::1706966658::0::1::::<><>::res://death_particles.gd
 desktop-wallpaper-circle-petal-sky-font-png-favpng-HGKZUsKvr4SqJT9dfwPL76C2q_t.jpg::CompressedTexture2D::3476582352574853446::1701378873::1701378873::1::::<><>::
 earth.png::CompressedTexture2D::6731598884396896855::1701378873::1701378873::1::::<><>::
-enemy.gd::GDScript::-1::1701378873::0::1::::<>BasicPlayer<>::
+enemy.gd::GDScript::-1::1701381101::0::1::::<>BasicPlayer<>::
 enemy.tscn::PackedScene::4308292074059048803::1701378873::0::1::::<><>::res://enemy.gd<>uid://oqbnj8wl6b33
 energy_shield.png::CompressedTexture2D::7640820246328032959::1701378873::1701378873::1::::<><>::
 fire.png::CompressedTexture2D::1614076037788836907::1701378873::1701378873::1::::<><>::
@@ -26,9 +26,9 @@ image_part_001-modified.png::CompressedTexture2D::1480277282779332836::170137887
 image_part_001.jpg::CompressedTexture2D::3326364620492844252::1701378873::1701378873::1::::<><>::
 magic_spell.png::CompressedTexture2D::8706078900135886596::1701378873::1701378873::1::::<><>::
 mob.gd::GDScript::-1::1701378873::0::1::::<>BasicPlayer<>::
-mob.tscn::PackedScene::7544743837203739894::1701378873::0::1::::<><>::res://mob.gd<>uid://n3uu1niyrkj4
+mob.tscn::PackedScene::7544743837203739894::1706966658::0::1::::<><>::res://mob.gd<>uid://n3uu1niyrkj4::::res://DeathSlimeIdleSide.png<>uid://dg4jgtimfmg44::::res://energy_shield.png
 pause.gd::GDScript::-1::1701378873::0::1::::<>Label<>::
-player.gd::GDScript::-1::1701378873::0::1::::<>BasicPlayer<>::
+player.gd::GDScript::-1::1701379984::0::1::::<>BasicPlayer<>::
 RayCast2D.gd::GDScript::-1::1701378873::0::1::::<>RayCast2D<>::
 shield.png::CompressedTexture2D::5704282803634080955::1701378873::1701378873::1::::<><>::
 spells.gd::GDScript::-1::1701378873::0::1::::<>Node<>::
@@ -38,7 +38,7 @@ wall_script.gd::GDScript::-1::1701378873::0::1::::<>Node<>::
 Warrior-Blue.png::CompressedTexture2D::8404884411767088652::1701378873::1701378873::1::::<><>::
 water.png::CompressedTexture2D::3637093233345880079::1701378873::1701378873::1::::<><>::
 world.gd::GDScript::-1::1701378873::0::1::::<>Node2D<>::
-world.tscn::PackedScene::3771488655153406705::1701378873::0::1::::<><>::res://world.gd<>res://player.gd<>uid://dr0nhol1s8q6g::::res://Warrior-Blue.png<>res://enemy.gd<>uid://di3lckvu2xiom::::res://wall.tscn<>uid://oqbnj8wl6b33::::res://bullet.tscn<>uid://dfqy3f8e2l463::::res://mob.tscn<>uid://dg4jgtimfmg44::::res://energy_shield.png<>uid://c3gv6w5ou6svi::::res://assets/bars/bar_under.png<>uid://ca8e3ibjrsyh1::::res://assets/bars/health_bar.png<>res://scripts/bars/health_bar.gd<>uid://dg4e4cpgxpgio::::res://assets/bars/mana_bar.png<>res://scripts/bars/mana_bar.gd<>res://scripts/bars/stamina_bar.gd<>uid://c08gb2aern8ki::::res://Fox Sprite Sheet.png<>uid://dd0nkhaiiaykq::::res://assets/bars/stamina_bar.png<>res://RayCast2D.gd<>uid://qubhcf01u3wg::::res://zeo254-completed-commission.png<>uid://dsy3ts75q3jkk::::res://scripts/bars/extras/mushroom.jpg<>uid://cvumrmtlpaw63::::res://bullet.png<>uid://bvw06fr3sd4ug::::res://air.png<>res://spells.gd<>uid://w84ujt0b40sl::::res://fire.png<>uid://br23nnwl4pg3x::::res://water.png<>uid://c253pkl2cfoyh::::res://earth.png<>uid://cnjgx7isuh0ex::::res://shield.png<>res://pause.gd
+world.tscn::PackedScene::3771488655153406705::1706966658::0::1::::<><>::res://world.gd<>res://player.gd<>uid://dr0nhol1s8q6g::::res://Warrior-Blue.png<>res://enemy.gd<>uid://di3lckvu2xiom::::res://wall.tscn<>uid://oqbnj8wl6b33::::res://bullet.tscn<>uid://dfqy3f8e2l463::::res://mob.tscn<>uid://dg4jgtimfmg44::::res://energy_shield.png<>uid://c3gv6w5ou6svi::::res://assets/bars/bar_under.png<>uid://ca8e3ibjrsyh1::::res://assets/bars/health_bar.png<>res://scripts/bars/health_bar.gd<>uid://dg4e4cpgxpgio::::res://assets/bars/mana_bar.png<>res://scripts/bars/mana_bar.gd<>res://scripts/bars/stamina_bar.gd<>uid://c08gb2aern8ki::::res://Fox Sprite Sheet.png<>uid://dd0nkhaiiaykq::::res://assets/bars/stamina_bar.png<>res://RayCast2D.gd<>uid://qubhcf01u3wg::::res://zeo254-completed-commission.png<>uid://dsy3ts75q3jkk::::res://scripts/bars/extras/mushroom.jpg<>uid://cvumrmtlpaw63::::res://bullet.png<>uid://bvw06fr3sd4ug::::res://air.png<>res://spells.gd<>uid://w84ujt0b40sl::::res://fire.png<>uid://br23nnwl4pg3x::::res://water.png<>uid://c253pkl2cfoyh::::res://earth.png<>uid://cnjgx7isuh0ex::::res://shield.png<>res://pause.gd
 zeo254-completed-commission.png::CompressedTexture2D::1164382384781986306::1701378873::1701378873::1::::<><>::
 ::res://assets/::1701378873
 ::res://assets/bars/::1701378873

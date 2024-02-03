@@ -1,4 +1,4 @@
 res://world.tscn
 res://death_particles.tscn
-res://enemy.gd
-res://player.gd
+res://mob.tscn
+res://basic_player.gd

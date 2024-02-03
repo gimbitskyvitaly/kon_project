@@ -83,6 +83,20 @@ visible = false
 scale = Vector2(0.14, 0.14)
 texture = ExtResource("3_s3rva")
 
+[node name="BloodParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 30
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+direction = Vector2(0, -1)
+spread = 106.2
+gravity = Vector2(0, 500)
+initial_velocity_min = 56.18
+initial_velocity_max = 146.07
+color = Color(0.713726, 0, 0, 1)
+
 [connection signal="body_entered" from="area_folow" to="." method="_on_area_folow_body_entered"]
 [connection signal="body_exited" from="area_folow" to="." method="_on_area_folow_body_exited"]
 [connection signal="body_entered" from="Area_Shield" to="." method="_on_area_shield_body_entered"]
