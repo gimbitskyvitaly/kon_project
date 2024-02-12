@@ -1,4 +1,6 @@
 res://world.tscn
 res://death_particles.tscn
 res://mob.tscn
-res://basic_player.gd
+res://menu.tscn
+res://menu.gd
+res://dungeon.tscn

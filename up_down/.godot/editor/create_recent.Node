@@ -1,3 +1,8 @@
+Label
+TextEdit
+TileMap
+Button
+VBoxContainer
 CPUParticles2D
 CanvasLayer
 ShaderGlobalsOverride

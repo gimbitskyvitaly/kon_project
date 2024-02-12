@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://cctl2iw4672v8"]
+
+[ext_resource type="Script" path="res://menu.gd" id="1_jya8g"]
+[ext_resource type="Texture2D" uid="uid://bfe32bcurfik2" path="res://photo_2023-11-23_23-44-17.jpg" id="1_oni0h"]
+
+[sub_resource type="Theme" id="Theme_f8046"]
+default_font_size = 50
+
+[sub_resource type="SystemFont" id="SystemFont_5r60f"]
+font_weight = 425
+
+[sub_resource type="LabelSettings" id="LabelSettings_0cmfk"]
+font = SubResource("SystemFont_5r60f")
+font_size = 200
+outline_size = 4
+shadow_size = 50
+shadow_color = Color(0, 0, 0, 0.364706)
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jya8g")
+
+[node name="Photo2023-11-2323-44-17" type="Sprite2D" parent="."]
+position = Vector2(587, 530)
+scale = Vector2(0.911719, 0.911719)
+texture = ExtResource("1_oni0h")
+
+[node name="DungeonButton" type="Button" parent="."]
+offset_left = 721.0
+offset_top = 252.0
+offset_right = 1093.0
+offset_bottom = 345.0
+theme = SubResource("Theme_f8046")
+text = "Dungeon
+"
+
+[node name="ForestButton" type="Button" parent="."]
+offset_left = 79.0
+offset_top = 254.0
+offset_right = 451.0
+offset_bottom = 347.0
+theme = SubResource("Theme_f8046")
+text = "Forest"
+
+[node name="KONLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 352.0
+offset_top = -14.0
+offset_right = 796.0
+offset_bottom = 262.0
+text = "KON"
+label_settings = SubResource("LabelSettings_0cmfk")
+
+[connection signal="pressed" from="DungeonButton" to="." method="_on_dungeon_button_pressed"]
+[connection signal="pressed" from="ForestButton" to="." method="_on_forest_button_pressed"]
